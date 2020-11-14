@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import {CustomvalidationService} from "../../services/customvalidation.service";
+import {CustomvalidationService} from "../services/customvalidation.service";
 
 @Component({
   selector: 'app-register',

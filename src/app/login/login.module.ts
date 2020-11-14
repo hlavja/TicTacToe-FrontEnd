@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
+import {RouterModule} from "@angular/router";
 
 
 
@@ -12,7 +13,8 @@ import {BrowserModule} from "@angular/platform-browser";
     CommonModule,
     ReactiveFormsModule,
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ]
 })
 export class LoginModule { }

@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+</div>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="row">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Zkratka</label>
+        <input type="text" formControlName="username" class="form-control"  />
+        <div *ngIf="submitted && f.username.errors?.required" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Heslo</label>
+        <input type="password" formControlName="password" class="form-control"  />
+        <div *ngIf="submitted && f.password.errors?.required" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button [disabled]="submitted" class="btn btn-primary">
+          <span *ngIf="submitted" class="spinner-border spinner-border-sm mr-1"></span>
+          Přihlásit se
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="d-flex justify-content-center align-items-center">
+</div>

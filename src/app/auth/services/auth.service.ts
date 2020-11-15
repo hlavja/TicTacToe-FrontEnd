@@ -74,7 +74,8 @@ export class AuthService {
     if (parsedToken?.sub && parsedToken?.sub){
       const user: UserModel = {
         code: parsedToken.sub,
-        roles: parsedToken.auth
+        roles: parsedToken.auth,
+        id: parsedToken.userId
       };
       this.userState.setUser(user);
       /*if(user.roles.indexOf("ROLE_USER") > -1){

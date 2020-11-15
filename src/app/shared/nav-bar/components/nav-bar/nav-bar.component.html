@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="https://www.aimtecglobal.com/" target="_blank">
+    <img class="logo" src="/assets/images/ticTacToe.svg" alt="TicTacToe">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li [className]="menuItemKey == 1 ? 'nav-item active' : 'nav-item'">
+        <a class="nav-link"
+           [routerLink]="['/lobby']">Lobby</a>
+      </li>
+      <li [className]="menuItemKey == 2 ? 'nav-item active' : 'nav-item'">
+        <a class="nav-link" [routerLink]="['/match-history/user', loggedUser.id]">
+          Match history
+        </a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class='nav-item'>
+        <a class='nav-link' [routerLink]="['/user-profile', loggedUser.id]">
+          <strong>
+            {{ (loggedUser.code).toUpperCase() }}
+          </strong>
+        </a>
+      </li>
+      <ul class="navbar-nav mr-auto">
+        <li class="divider-vertical"></li>
+        <li class='nav-item'>
+          <a class='nav-link' [routerLink]="" (click)="logOut()">Odhlásit se</a>
+        </li>
+      </ul>
+    </ul>
+  </div>
+</nav>
+
+

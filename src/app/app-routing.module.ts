@@ -5,6 +5,8 @@ import {RegisterComponent} from "./register/components/register.component";
 import {LobbyComponent} from "./lobby/components/lobby.component";
 import {AuthGuard} from "./auth/guards/auth.guard";
 import {RoleGuard} from "./auth/guards/role.guard";
+import {UserProfileComponent} from "./user-profile/components/user-profile/user-profile.component";
+import {MatchHistoryComponent} from "./match-history/components/match-history/match-history.component";
 
 const routes: Routes = [
   {
@@ -16,6 +18,22 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     path: 'lobby',
     component: LobbyComponent,
+    pathMatch: 'full',
+    data: {
+      expectedRole: ['ROLE_ADMIN', 'ROLE_USER']
+    }
+  }, {
+    canActivate: [AuthGuard, RoleGuard],
+    path: 'user-profile/:id',
+    component: UserProfileComponent,
+    pathMatch: 'full',
+    data: {
+      expectedRole: ['ROLE_ADMIN', 'ROLE_USER']
+    }
+  }, {
+    canActivate: [AuthGuard, RoleGuard],
+    path: 'match-history/user/:id',
+    component: MatchHistoryComponent,
     pathMatch: 'full',
     data: {
       expectedRole: ['ROLE_ADMIN', 'ROLE_USER']

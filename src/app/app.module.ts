@@ -8,6 +8,9 @@ import {RegisterModule} from "./register/register.module";
 import {HttpClientModule} from "@angular/common/http";
 import {LobbyModule} from "./lobby/lobby.module";
 import {RouterModule} from "@angular/router";
+import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
+import {UserProfileModule} from "./user-profile/user-profile.module";
+import {MatchHistoryModule} from "./match-history/match-history.module";
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import {RouterModule} from "@angular/router";
     RegisterModule,
     HttpClientModule,
     LobbyModule,
-    RouterModule
+    RouterModule,
+    NavBarModule,
+    UserProfileModule,
+    MatchHistoryModule
   ],
   providers: [
   ],

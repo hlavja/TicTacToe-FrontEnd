@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {AuthService} from "../../auth/services/auth.service";
 import {Router} from "@angular/router";
-import {LoggerService} from "../../shared/services/logger.service";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   disableSubmitButton$:BehaviorSubject<boolean> = new BehaviorSubject<boolean> (false);
   loginForm: FormGroup;
-  returnUrl: string;
   submitted: boolean;
   subscription: Subscription;
   showError = false;

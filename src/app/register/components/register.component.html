@@ -10,9 +10,8 @@
         <div class="card-body">
           <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-              <label>Email (used for login)
-                <input type="text" class="form-control" formControlName="email">
-              </label>
+              <label for="email">Email (used for login)</label>
+                <input type="text" class="form-control" formControlName="email" id="email">
               <span class="text-danger"
                     *ngIf="(registerFormControl.email.touched || submitted) && registerFormControl.email.errors?.required">
                                 Email is required
@@ -23,9 +22,8 @@
                             </span>
             </div>
             <div class="form-group">
-              <label>User Name
-                <input type="text" class="form-control" formControlName="username">
-              </label>
+              <label for="username">User Name</label>
+                <input type="text" class="form-control" formControlName="username" id="username">
               <span class="text-danger"
                     *ngIf="(registerFormControl.username.touched || submitted) && registerFormControl.username.errors?.required">
                                 User Name is required
@@ -36,9 +34,8 @@
                             </span>
             </div>
             <div class="form-group">
-              <label>Password
-                <input type="password" class="form-control" formControlName="password">
-              </label>
+              <label for="password">Password</label>
+                <input type="password" class="form-control" formControlName="password" id="password" autocomplete="mew-password">
               <span class="text-danger"
                     *ngIf="(registerFormControl.password.touched || submitted) && registerFormControl.password.errors?.required">
                                 Password is required
@@ -50,9 +47,8 @@
                             </span>
             </div>
             <div class="form-group">
-              <label>Confirm Password
-                <input type="password" class="form-control" formControlName="confirmPassword">
-              </label>
+              <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" formControlName="confirmPassword" id="confirmPassword" autocomplete="mew-password">
               <span class="text-danger"
                     *ngIf="(registerFormControl.confirmPassword.touched || submitted)&& registerFormControl.confirmPassword.errors?.required">
                                 Confirm Password is required
@@ -63,10 +59,22 @@
                             </span>
             </div>
             <div class="form-group">
-              <button [disabled]="submitted" class="btn btn-primary">
-                <span *ngIf="submitted" class="spinner-border spinner-border-sm mr-1"></span>
+              <button [disabled]="showLoading" class="btn btn-primary">
+                <span *ngIf="showLoading" class="spinner-border spinner-border-sm mr-1"></span>
                 Register
               </button>
+            </div>
+            <div class="form-group">
+              <span class="text-success"
+                    *ngIf="showSuccess">
+                                {{ successMessage }}
+                            </span>
+            </div>
+            <div class="form-group">
+              <span class="text-danger"
+                    *ngIf="showError">
+                                {{ errorMessage }}
+                            </span>
             </div>
           </form>
           Already have an account?

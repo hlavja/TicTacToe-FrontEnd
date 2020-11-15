@@ -1,0 +1,13 @@
+export * from './accountResource.service';
+import { AccountResourceService } from './accountResource.service';
+export * from './friendResource.service';
+import { FriendResourceService } from './friendResource.service';
+export * from './gameResource.service';
+import { GameResourceService } from './gameResource.service';
+export * from './moveResource.service';
+import { MoveResourceService } from './moveResource.service';
+export * from './userJwtController.service';
+import { UserJwtControllerService } from './userJwtController.service';
+export * from './userResource.service';
+import { UserResourceService } from './userResource.service';
+export const APIS = [AccountResourceService, FriendResourceService, GameResourceService, MoveResourceService, UserJwtControllerService, UserResourceService];

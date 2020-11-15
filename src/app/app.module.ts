@@ -1,10 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {LOCALE_ID, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {LoginModule} from "./login/login.module";
 import {RegisterModule} from "./register/register.module";
+import {HttpClientModule} from "@angular/common/http";
+import {LobbyModule} from "./lobby/lobby.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -14,10 +17,12 @@ import {RegisterModule} from "./register/register.module";
     BrowserModule,
     AppRoutingModule,
     LoginModule,
-    RegisterModule
+    RegisterModule,
+    HttpClientModule,
+    LobbyModule,
+    RouterModule
   ],
   providers: [
-    {provide: LOCALE_ID, useValue: 'cs'}
   ],
   bootstrap: [AppComponent]
 })

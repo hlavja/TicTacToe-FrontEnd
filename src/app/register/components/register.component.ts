@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import {CustomValidationService} from "../services/customvalidation.service";
 import {of} from "rxjs";
-import {AccountResourceService, ManagedUserVM} from "../../shared/swagger-generated";
 import {Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
+import {AccountResourceService, ManagedUserVM} from "../../shared/swagger-generated";
 
 @Component({
   selector: 'app-register',

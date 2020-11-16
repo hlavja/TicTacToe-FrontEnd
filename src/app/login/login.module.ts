@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
-import {AuthModule} from "../auth/auth.module";
 
 
 
@@ -18,7 +17,6 @@ import {AuthModule} from "../auth/auth.module";
     FormsModule,
     RouterModule,
     HttpClientModule,
-    AuthModule
   ]
 })
 export class LoginModule { }

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {AuthService} from "../../auth/services/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -21,7 +20,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private router: Router
   ) {
     this.subscription = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
@@ -57,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login(loginForm: FormGroup): void {
-    this.authService.doLogin({
+   /* this.authService.doLogin({
       email: loginForm.controls['email'].value,
       password: loginForm.controls['password'].value,
       rememberMe: loginForm.controls['rememberMe'].value
@@ -71,12 +69,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.errorMessage = "Wrong email and password!"
           this.loginForm.reset();
         }
-      });
+      });*/
   }
 
   userRedirect(): void {
-    if (this.authService.getUser()){
+   /* if (this.authService.getUser()){
       this.router.navigate(['/lobby']);
-    }
+    }*/
   }
 }

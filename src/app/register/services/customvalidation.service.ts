@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomvalidationService {
+export class CustomValidationService {
 
   patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {

@@ -7,6 +7,7 @@ import {AuthGuard} from "./auth/guards/auth.guard";
 import {RoleGuard} from "./auth/guards/role.guard";
 import {UserProfileComponent} from "./user-profile/components/user-profile/user-profile.component";
 import {MatchHistoryComponent} from "./match-history/components/match-history/match-history.component";
+import {ResetPasswordComponent} from "./reset-password/components/reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   }, {
     path: 'login',
     component: LoginComponent,
+    pathMatch: 'full',
+  }, {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
     pathMatch: 'full',
   }, {
     path: 'register',

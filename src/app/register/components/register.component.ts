@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import {CustomvalidationService} from "../services/customvalidation.service";
+import {CustomValidationService} from "../services/customvalidation.service";
 import {of} from "rxjs";
 import {AccountResourceService, ManagedUserVM} from "../../shared/swagger-generated";
 import {Router} from "@angular/router";
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private customValidator: CustomvalidationService,
+    private customValidator: CustomValidationService,
     private accountService: AccountResourceService,
     private router: Router
   ) { }

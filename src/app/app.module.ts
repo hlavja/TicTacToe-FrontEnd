@@ -11,6 +11,7 @@ import {RouterModule} from "@angular/router";
 import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
 import {UserProfileModule} from "./user-profile/user-profile.module";
 import {MatchHistoryModule} from "./match-history/match-history.module";
+import {ResetPasswordModule} from "./reset-password/reset-password.module";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MatchHistoryModule} from "./match-history/match-history.module";
     RouterModule,
     NavBarModule,
     UserProfileModule,
-    MatchHistoryModule
+    MatchHistoryModule,
+    ResetPasswordModule
   ],
   providers: [
   ],

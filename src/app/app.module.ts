@@ -3,17 +3,18 @@ import {NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {LoginModule} from "./login/login.module";
-import {RegisterModule} from "./register/register.module";
-import {LobbyModule} from "./lobby/lobby.module";
-import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
-import {UserProfileModule} from "./user-profile/user-profile.module";
-import {MatchHistoryModule} from "./match-history/match-history.module";
-import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import {BrowserModule} from "@angular/platform-browser";
-import {AccountResourceService} from "./shared/swagger-generated";
+import {FormsModule} from "@angular/forms";
+import {LoginModule} from "./login/login.module";
+import {LoginService} from "./core/login/login.service";
+import {AccountService} from "./core/auth/account.service";
+import {StateStorageService} from "./core/auth/state-storage.service";
+import {SessionStorageService} from "ngx-webstorage";
+import {LobbyModule} from "./lobby/lobby.module";
+import {RegisterModule} from "./register/register.module";
+import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
 
 @NgModule({
   declarations: [
@@ -22,18 +23,20 @@ import {AccountResourceService} from "./shared/swagger-generated";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    LoginModule,
-    RegisterModule,
     HttpClientModule,
-    LobbyModule,
     RouterModule,
-    NavBarModule,
-    UserProfileModule,
-    MatchHistoryModule,
-    ResetPasswordModule
+    FormsModule,
+    LoginModule,
+    LobbyModule,
+    RegisterModule,
+    NavBarModule
   ],
   providers: [
-    AccountResourceService
+    LoginService,
+    AccountService,
+    StateStorageService,
+    SessionStorageService,
+
   ],
   bootstrap: [AppComponent]
 })

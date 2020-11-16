@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Router} from "@angular/router";
+import {LoginService} from "../../core/login/login.service";
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {
     this.subscription = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
   }
@@ -46,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.submitted = true;
     if (this.loginForm.valid) {
       this.showError = false;
-      this.login(this.loginForm);
+      this.login();
     } else {
       this.submitted = false;
       this.showError = true;
@@ -54,8 +56,29 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  login(loginForm: FormGroup): void {
-   /* this.authService.doLogin({
+  login(): void {
+    this.loginService
+      .login({
+        username: this.loginForm.get('email')!.value,
+        password: this.loginForm.get('password')!.value,
+        rememberMe: this.loginForm.get('rememberMe')!.value,
+      })
+      .subscribe(
+        () => {
+          if (
+            this.router.url === '/account/register' ||
+            this.router.url.startsWith('/account/activate') ||
+            this.router.url.startsWith('/account/reset/')
+          ) {
+            this.router.navigate(['']);
+          }
+        },
+        () => (this.showError = true)
+      );
+  }
+
+  /*login(loginForm: FormGroup): void {
+    this.authService.doLogin({
       email: loginForm.controls['email'].value,
       password: loginForm.controls['password'].value,
       rememberMe: loginForm.controls['rememberMe'].value
@@ -69,8 +92,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.errorMessage = "Wrong email and password!"
           this.loginForm.reset();
         }
-      });*/
-  }
+      });
+  }*/
 
   userRedirect(): void {
    /* if (this.authService.getUser()){

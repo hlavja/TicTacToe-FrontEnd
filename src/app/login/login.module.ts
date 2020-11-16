@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 @NgModule({
   declarations: [LoginComponent],
   imports: [
+    BrowserModule,
     CommonModule,
     ReactiveFormsModule,
     BrowserModule,

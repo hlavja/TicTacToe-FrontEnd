@@ -10,11 +10,12 @@ import {FormsModule} from "@angular/forms";
 import {LoginModule} from "./login/login.module";
 import {LoginService} from "./core/login/login.service";
 import {AccountService} from "./core/auth/account.service";
-import {StateStorageService} from "./core/auth/state-storage.service";
 import {SessionStorageService} from "ngx-webstorage";
 import {LobbyModule} from "./lobby/lobby.module";
 import {RegisterModule} from "./register/register.module";
 import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
+import {TicTacSharedModule} from "./shared/shared.module";
+import {AccountResourceService} from "./shared/swagger-generated";
 
 @NgModule({
   declarations: [
@@ -29,14 +30,14 @@ import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
     LoginModule,
     LobbyModule,
     RegisterModule,
-    NavBarModule
+    NavBarModule,
+    TicTacSharedModule
   ],
   providers: [
     LoginService,
     AccountService,
-    StateStorageService,
     SessionStorageService,
-
+    AccountResourceService
   ],
   bootstrap: [AppComponent]
 })

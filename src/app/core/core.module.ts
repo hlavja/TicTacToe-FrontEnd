@@ -8,15 +8,10 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgJhipsterModule } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
-import * as moment from 'moment';
-import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
-
-import { AuthExpiredInterceptor } from 'app/blocks/interceptor/auth-expired.interceptor';
-import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
-import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
-
 import { fontAwesomeIcons } from './icons/font-awesome-icons';
+import {AuthExpiredInterceptor} from "../blocks/interceptor/auth-expired.interceptor";
+import {ErrorHandlerInterceptor} from "../blocks/interceptor/errorhandler.interceptor";
+import {NotificationInterceptor} from "../blocks/interceptor/notification.interceptor";
 
 @NgModule({
   imports: [
@@ -35,7 +30,6 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
       provide: LOCALE_ID,
       useValue: 'en',
     },
-    { provide: NgbDateAdapter, useClass: NgbDateMomentAdapter },
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
@@ -55,9 +49,8 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
   ],
 })
 export class TicTacCoreModule {
-  constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
+  constructor(iconLibrary: FaIconLibrary) {
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
-    dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
   }
 }

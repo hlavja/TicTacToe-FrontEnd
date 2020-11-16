@@ -4,8 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { shareReplay, tap, catchError } from 'rxjs/operators';
 
-import { TrackerService } from '../tracker/tracker.service';
-import {StateStorageService} from "./state-storage.service";
 import {SERVER_API_URL} from "../../app.constants";
 import {Account} from "../user/account.model";
 
@@ -17,8 +15,6 @@ export class AccountService {
 
   constructor(
     private http: HttpClient,
-    private trackerService: TrackerService,
-    private stateStorageService: StateStorageService,
     private router: Router
   ) {}
 
@@ -29,11 +25,6 @@ export class AccountService {
   authenticate(identity: Account | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
-    if (identity) {
-      this.trackerService.connect();
-    } else {
-      this.trackerService.disconnect();
-    }
   }
 
   hasAnyAuthority(authorities: string[] | string): boolean {
@@ -56,7 +47,7 @@ export class AccountService {
           this.authenticate(account);
 
           if (account) {
-            this.navigateToStoredUrl();
+            this.navigateToLobby();
           }
         }),
         shareReplay()
@@ -81,13 +72,7 @@ export class AccountService {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }
 
-  private navigateToStoredUrl(): void {
-    // previousState can be set in the authExpiredInterceptor and in the userRouteAccessService
-    // if login is successful, go to stored previousState and clear previousState
-    const previousUrl = this.stateStorageService.getUrl();
-    if (previousUrl) {
-      this.stateStorageService.clearUrl();
-      this.router.navigateByUrl(previousUrl);
-    }
+  private navigateToLobby(): void {
+    this.router.navigateByUrl('/lobby');
   }
 }

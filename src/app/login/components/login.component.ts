@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login({
         username: this.loginForm.get('email')!.value,
         password: this.loginForm.get('password')!.value,
-        rememberMe: this.loginForm.get('rememberMe')!.value,
+        rememberMe: false,
       })
       .subscribe(
         () => {
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.url.startsWith('/account/activate') ||
             this.router.url.startsWith('/account/reset/')
           ) {
-            this.router.navigate(['']);
+            this.router.navigate(['/lobby']);
           }
         },
         () => (this.showError = true)

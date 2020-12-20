@@ -13,6 +13,7 @@ import {UserProfileModule} from "./user-profile/user-profile.module";
 import {MatchHistoryModule} from "./match-history/match-history.module";
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {CookieService} from "ngx-cookie-service";
+import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
 
 @NgModule({
   declarations: [
@@ -30,11 +31,14 @@ import {CookieService} from "ngx-cookie-service";
     UserProfileModule,
     MatchHistoryModule,
     ResetPasswordModule,
+    ContextMenuModule
   ],
   providers: [
     Title,
-    CookieService
+    CookieService,
+    ContextMenuService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

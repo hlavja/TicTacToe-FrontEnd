@@ -26,8 +26,7 @@ export class NavBarComponent implements OnInit {
   }
 
   setUser(){
-    setTimeout(() => 0);
-    this.loggedUser = this.authService.getUserState();
+    this.authService.getUserState().then(user => this.loggedUser = user);
   }
 
   logOut(){

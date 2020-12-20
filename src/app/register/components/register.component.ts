@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
           this.showSuccess = true;
           setTimeout(() => {
             this.router.navigate(['/login']);
-          }, 5000);
+          }, 3000);
         }
       }) , catchError (err => {
         this.handleError(err)

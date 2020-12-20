@@ -14,6 +14,7 @@ import {MatchHistoryModule} from "./match-history/match-history.module";
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {CookieService} from "ngx-cookie-service";
 import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
     UserProfileModule,
     MatchHistoryModule,
     ResetPasswordModule,
-    ContextMenuModule
+    ContextMenuModule,
+    NgbModule
   ],
   providers: [
     Title,

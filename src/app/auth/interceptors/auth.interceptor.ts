@@ -31,13 +31,13 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         catchError(err => {
-          if ((err instanceof HttpErrorResponse && err.status === 401)) {
+          /*if ((err instanceof HttpErrorResponse && err.status === 401)) {
             return this.handle401Error(request, next);
           } else if ((err instanceof HttpErrorResponse && err.status === 403 || err.status === 504)) {
             return this.handle403Error(request, next);
-          } else {
+          } else {*/
             return throwError(err);
-          }
+          //}
         })
       );
   }

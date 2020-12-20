@@ -33,12 +33,11 @@ export class UserState {
     return this.userState$.getValue();
   }
 
-  getUser$(): Observable<UserDTO> {
-    if (this.userState$.getValue() === null){
+  getUser$(refresh: boolean = false): Observable<UserDTO> {
+    if (this.userState$.getValue() === null || refresh){
       this.accountService.getAccountUsingGET("body")
         .subscribe(res => this.setUser(res));
     }
-    console.log(this.userState$.getValue())
     return this.userState$.asObservable();
   }
 

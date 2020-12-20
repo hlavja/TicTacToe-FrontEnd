@@ -1,2 +1,91 @@
 <app-nav-bar></app-nav-bar>
-<p>user-profile works!</p>
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>User profile of - {{ user?.login }}</h1>
+
+      <hr>
+      <div class="alert alert-success" *ngIf="success">
+        <strong> {{ successMessage }} </strong>
+      </div>
+      <div class="alert alert-danger" *ngIf="showError">
+        <strong> {{ errorMessage }} </strong>
+      </div>
+
+      <h2>User information change</h2>
+      <br>
+      <form class="form" [formGroup]="settingsForm" (ngSubmit)="updateUser()">
+        <div class="form-group">
+          <label for="email">Email (used for login)</label>
+          <input [value]="user?.email" type="text" class="form-control" formControlName="email" id="email">
+          <span class="text-danger"
+                *ngIf="(settingsFormControl.email.touched || submitted) && settingsFormControl.email.errors?.required">
+                                Email is required
+                            </span>
+          <span class="text-danger"
+                *ngIf="settingsFormControl.email.touched && settingsFormControl.email.errors?.email">
+                                Enter a valid email address
+                            </span>
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input [value]="user?.firstName" type="text" class="form-control" formControlName="firstName" id="firstName">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input [value]="user?.lastName" type="text" class="form-control" formControlName="lastName" id="lastName">
+        </div>
+        <div class="form-group">
+          <button [disabled]="showLoading" class="btn btn-primary">
+            <span *ngIf="showLoading" class="spinner-border spinner-border-sm mr-1"></span>
+            Apply
+          </button>
+        </div>
+      </form>
+
+      <h2>Password change</h2>
+      <br>
+      <form class="form" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <div class="form-group">
+          <label for="currentPassword">Password</label>
+          <input type="password" class="form-control" formControlName="currentPassword" id="currentPassword" autocomplete="current-password">
+          <span class="text-danger"
+                *ngIf="(passwordFormControl.currentPassword.touched || submitted) && passwordFormControl.currentPassword.errors?.required && passwordFormControl.currentPassword">
+                                Current Password is required
+                            </span>
+        </div>
+        <div class="form-group">
+          <label for="newPassword">Password</label>
+          <input type="password" class="form-control" formControlName="newPassword" id="newPassword" autocomplete="mew-password">
+          <span class="text-danger"
+                *ngIf="(passwordFormControl.newPassword.touched || submitted) && passwordFormControl.newPassword.errors?.required && passwordFormControl.newPassword">
+                                Current Password is required
+                            </span>
+          <span class="text-danger"
+                *ngIf="passwordFormControl.newPassword.touched && passwordFormControl.newPassword.errors?.invalidPassword">
+                                Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                                letter and 1 number
+                            </span>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" class="form-control" formControlName="confirmPassword" id="confirmPassword" autocomplete="mew-password">
+          <span class="text-danger"
+                *ngIf="(passwordFormControl.confirmPassword.touched || submitted)&& passwordFormControl.confirmPassword.errors?.required && passwordFormControl.password">
+                                Confirm Password is required
+                            </span>
+          <span class="text-danger"
+                *ngIf="passwordFormControl.confirmPassword.touched && passwordFormControl.confirmPassword.errors?.passwordMismatch">
+                                Passwords doesnot match
+                            </span>
+        </div>
+        <div class="form-group">
+          <button [disabled]="showLoading" class="btn btn-primary">
+            <span *ngIf="showLoading" class="spinner-border spinner-border-sm mr-1"></span>
+            Change password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

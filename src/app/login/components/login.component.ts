@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
 import {UserState} from "../../auth/states/user.state";
 import {LobbyService} from "../../lobby/services/lobby.service";
-import {switchMap} from "rxjs/operators";
+import {catchError, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   disableSubmitButton$:BehaviorSubject<boolean> = new BehaviorSubject<boolean> (false);
   loginForm: FormGroup;
   submitted: boolean;
-  subscription: Subscription;
+  subscription: Subscription[] = [];
   showError = false;
   showLoading = false;
   errorMessage: string;
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private userState: UserState,
     private lobbyService: LobbyService
   ) {
-    this.subscription = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
+    this.subscription[0] = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
   }
 
   get registerFormControl() {
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void{
-    this.subscription.unsubscribe();
+    this.subscription.forEach(sub => sub.unsubscribe);
   }
 
   onSubmit(){

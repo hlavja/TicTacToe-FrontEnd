@@ -11,9 +11,8 @@
         <tbody>
         <tr *ngFor="let player of players">
           <ng-container *ngIf="!player.friend && player.online">
-            <td [className]="player.available ? 'table-success' : 'table-error'" [contextMenu]="basicMenu" [contextMenuSubject]="player">
-                {{ player.login }}
-            </td>
+            <td *ngIf="player.available" [contextMenu]="userFull" [contextMenuSubject]="player" class="table-success">{{ player.login }}</td>
+            <td *ngIf="!player.available" [contextMenu]="addFriend" [contextMenuSubject]="player" class="table-danger">{{ player.login }}</td>
           </ng-container>
         </tr>
         </tbody>
@@ -28,10 +27,10 @@
         </thead>
         <tbody>
         <tr *ngFor="let player of players">
-          <ng-container *ngIf="player?.friend">
-            <td *ngIf="player.online && player.available" [contextMenu]="basicMenu" [contextMenuSubject]="player" class="table-success">{{ player.login }}</td>
-            <td *ngIf="player.online && !player.available" [contextMenu]="basicMenu" [contextMenuSubject]="player" class="table-danger">{{ player.login }}</td>
-            <td *ngIf="!player.online" [contextMenu]="basicMenu" [contextMenuSubject]="player" class="table-dark">{{ player.login }}</td>
+          <ng-container *ngIf="player?.friend && player">
+            <td *ngIf="player.online && player.available" [contextMenu]="friendFull" [contextMenuSubject]="player" class="table-success">{{ player.login }}</td>
+            <td *ngIf="player.online && !player.available" [contextMenu]="removeFriend" [contextMenuSubject]="player" class="table-danger">{{ player.login }}</td>
+            <td *ngIf="!player.online" class="table-dark">{{ player.login }}</td>
           </ng-container>
         </tr>
         </tbody>
@@ -40,16 +39,32 @@
   </div>
 </div>
 
-<context-menu [useBootstrap4]="true">
+<context-menu #addFriend [useBootstrap4]="true">
   <ng-template contextMenuItem (execute)="getPlayers()">
     Add friend
   </ng-template>
+</context-menu>
+
+<context-menu #userFull [useBootstrap4]="true">
   <ng-template contextMenuItem (execute)="getPlayers()">
-      Remove friend
+    Add friend
   </ng-template>
   <ng-template contextMenuItem (execute)="getPlayers()">
     Challenge game
   </ng-template>
 </context-menu>
 
--->
+<context-menu #friendFull [useBootstrap4]="true">
+  <ng-template contextMenuItem (execute)="getPlayers()">
+    Remove friend
+  </ng-template>
+  <ng-template contextMenuItem (execute)="getPlayers()">
+    Challenge game
+  </ng-template>
+</context-menu>
+
+<context-menu #removeFriend [useBootstrap4]="true">
+  <ng-template contextMenuItem (execute)="getPlayers()">
+    Remove friend
+  </ng-template>
+</context-menu>

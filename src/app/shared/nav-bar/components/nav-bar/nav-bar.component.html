@@ -14,14 +14,14 @@
            [routerLink]="['/lobby']">Lobby</a>
       </li>
       <li [className]="menuItemKey == 2 ? 'nav-item active' : 'nav-item'">
-        <a class="nav-link" [routerLink]="['/match-history/user', loggedUser?.id]">
+        <a class="nav-link" [routerLink]="['/match-history/user', loggedUser.id]"  *ngIf="loggedUser">
           Match history
         </a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class='nav-item'>
-        <a class='nav-link' [routerLink]="['/user-profile', loggedUser?.id]">
+        <a class='nav-link' [routerLink]="['/user-profile', loggedUser.id]" *ngIf="loggedUser">
           <strong>
             {{ (loggedUser?.login).toUpperCase() }}
           </strong>

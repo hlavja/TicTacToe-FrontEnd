@@ -1,12 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {LobbyService} from "../services/lobby.service";
 import {OnlineUser} from "../model/online-users.model";
-import {Subject, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {PlayersState} from "../states/players.state";
-import {LobbyResourceService, PlayerDTO} from "../../shared/swagger-generated";
+import {LobbyResourceService, PlayerDTO, UserDTO} from "../../shared/swagger-generated";
 import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
 import {ContextMenuComponent} from "ngx-contextmenu";
+import {AuthService} from "../../auth/services/auth.service";
 
 @Component({
   selector: 'app-lobby',
@@ -20,21 +21,17 @@ export class LobbyComponent implements OnInit {
   contextmenuY = 0;
   contextMenuType;
 
-  otherMenuOptions = [
-    ['Favorite Color', function ($itemScope, $event, color) {
-      alert(color);
-    }]
-  ]
-
   private subscription: Subscription[] = [];
   activities: OnlineUser[] = [];
   players: PlayerDTO[] = [];
   private interval: Timeout;
+  user: UserDTO;
 
   constructor(
     private lobbyService: LobbyService,
     private playersState: PlayersState,
-    private lobbyPlayerService: LobbyResourceService
+    private lobbyPlayerService: LobbyResourceService,
+    private authService: AuthService
   ) {
     this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
       this.players = res;
@@ -44,18 +41,25 @@ export class LobbyComponent implements OnInit {
   }
 
   getPlayers(): void{
-    this.lobbyPlayerService.getOnlineUsersUsingGET(3, "body").pipe(
+    this.lobbyPlayerService.getOnlineUsersUsingGET(this.user.id, "body").pipe(
       tap(data => this.playersState.setPlayers(data))
-    ).toPromise();
+    ).subscribe();
+  }
+
+  setUser(){
+    this.authService.getUserState().subscribe(res => {
+      if(res){
+        this.user = res;
+        this.getPlayers();
+      }
+    });
   }
 
   ngOnInit(): void {
+    this.setUser();
     this.lobbyService.subscribe();
-/*    this.subscription = this.lobbyService.receive().subscribe((activity: OnlineUser) => {
-      this.showActivity(activity);
-    })
-*/
-    this.getPlayers();
+
+
     this.interval = setInterval(() => {
       this.getPlayers();
     }, 5000);

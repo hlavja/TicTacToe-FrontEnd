@@ -74,21 +74,23 @@ export class AuthService {
     }
   }
 
-  getUserState(): Promise<UserDTO> {
-    if(this.userState.getUser()){
-      return Promise.resolve(this.userState.getUser())
+  getUserState(): Observable<UserDTO> {
+    /*if(this.userState.getUser()){
+      return this.userState.getUser$().pipe(
+        tap(console.log)
+      ).toPromise();
     } else {
-      //TODO dostat data z BE a pak až renderovat nav-bar
       return this.getUser().toPromise().then( (success) => {
         if(success){
           return this.userState.getUser();
         }
         return Promise.resolve(null);
       })
-    }
+    }*/
+    return this.userState.getUser$();
   }
 
-  getUser(){
+  /*getUser(){
     return this.accountService.getAccountUsingGET("body")
       .pipe(
         tap(user => this.userState.setUser(user)),
@@ -97,7 +99,7 @@ export class AuthService {
           return of<boolean>(false);
         })
       );
-  }
+  }*/
 
   private storeTokens(tokens: JWTToken): void {
     sessionStorage.setItem(this.JWT_TOKEN, tokens.id_token);

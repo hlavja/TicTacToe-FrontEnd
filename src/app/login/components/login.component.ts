@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {AuthService} from "../../auth/services/auth.service";
 import {Router} from "@angular/router";
 import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
 import {UserState} from "../../auth/states/user.state";
 import {LobbyService} from "../../lobby/services/lobby.service";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -64,26 +65,31 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login(loginForm: FormGroup): void {
-    this.authService.doLogin({
+    this.subscription[2] = this.authService.doLogin({
       username: loginForm.controls['email'].value,
       password: loginForm.controls['password'].value,
       rememberMe: loginForm.controls['rememberMe'].value
     })
-      .toPromise()
-      .then((success) => {
-        this.disableSubmitButton$.next(false);
-        if (success){
-          this.authService.getUser().toPromise().then( (success) => {
-            if(success){
-              this.router.navigate(['/lobby']);
-            }
-          })
-        } else {
-          this.showError = true;
-          this.errorMessage = "Wrong email and password!"
-          this.loginForm.reset();
+      .pipe(
+        switchMap(res => {
+          this.disableSubmitButton$.next(false);
+          if (res){
+            return this.authService.getUserState();
+          } else {
+            this.showError = true;
+            this.errorMessage = "Wrong email and password!"
+            this.loginForm.reset();
+            return of (false);
+          }
+        })
+      ).subscribe(
+        res => {
+          if (res){
+            this.subscription[2].unsubscribe();
+            this.router.navigate(['/lobby']);
+          }
         }
-      });
+    );
   }
 
   userRedirect(): void {

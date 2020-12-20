@@ -29,7 +29,7 @@ import {CookieService} from "ngx-cookie-service";
     NavBarModule,
     UserProfileModule,
     MatchHistoryModule,
-    ResetPasswordModule
+    ResetPasswordModule,
   ],
   providers: [
     Title,

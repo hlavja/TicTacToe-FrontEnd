@@ -6,5 +6,6 @@ export * from './loginVM';
 export * from './managedUserVM';
 export * from './moveDTO';
 export * from './passwordChangeDTO';
+export * from './playerDTO';
 export * from './user';
 export * from './userDTO';

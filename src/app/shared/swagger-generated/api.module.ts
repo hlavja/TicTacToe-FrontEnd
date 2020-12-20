@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { AccountResourceService } from './api/accountResource.service';
 import { FriendResourceService } from './api/friendResource.service';
 import { GameResourceService } from './api/gameResource.service';
+import { LobbyResourceService } from './api/lobbyResource.service';
 import { MoveResourceService } from './api/moveResource.service';
 import { UserJwtControllerService } from './api/userJwtController.service';
 import { UserResourceService } from './api/userResource.service';
@@ -18,6 +19,7 @@ import { UserResourceService } from './api/userResource.service';
     AccountResourceService,
     FriendResourceService,
     GameResourceService,
+    LobbyResourceService,
     MoveResourceService,
     UserJwtControllerService,
     UserResourceService ]

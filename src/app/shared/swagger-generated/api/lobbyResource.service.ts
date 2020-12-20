@@ -18,15 +18,14 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { JWTToken } from '../model/jWTToken';
-import { LoginVM } from '../model/loginVM';
+import { PlayerDTO } from '../model/playerDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class UserJwtControllerService {
+export class LobbyResourceService {
 
     protected basePath = 'https://localhost:8080/api';
     public defaultHeaders = new HttpHeaders();
@@ -58,19 +57,24 @@ export class UserJwtControllerService {
 
 
     /**
-     * authorize
+     * getOnlineUsers
      * 
-     * @param loginVM loginVM
+     * @param userId userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authorizeUsingPOST(loginVM: LoginVM, observe?: 'body', reportProgress?: boolean): Observable<JWTToken>;
-    public authorizeUsingPOST(loginVM: LoginVM, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWTToken>>;
-    public authorizeUsingPOST(loginVM: LoginVM, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWTToken>>;
-    public authorizeUsingPOST(loginVM: LoginVM, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getOnlineUsersUsingGET(userId: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PlayerDTO>>;
+    public getOnlineUsersUsingGET(userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlayerDTO>>>;
+    public getOnlineUsersUsingGET(userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlayerDTO>>>;
+    public getOnlineUsersUsingGET(userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (loginVM === null || loginVM === undefined) {
-            throw new Error('Required parameter loginVM was null or undefined when calling authorizeUsingPOST.');
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling getOnlineUsersUsingGET.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (userId !== undefined && userId !== null) {
+            queryParameters = queryParameters.set('userId', <any>userId);
         }
 
         let headers = this.defaultHeaders;
@@ -86,16 +90,11 @@ export class UserJwtControllerService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.post<JWTToken>(`${this.basePath}/authenticate`,
-            loginVM,
+        return this.httpClient.get<Array<PlayerDTO>>(`${this.basePath}/get-players`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

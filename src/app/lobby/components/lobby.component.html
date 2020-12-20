@@ -1,2 +1,42 @@
 <app-nav-bar [menuItemKey]="1"></app-nav-bar>
-<p>lobby works!</p>
+<div>
+  <div class="row">
+    <div class="table-responsive col">
+      <table class="table table-striped" aria-describedby="tracker-page-heading">
+        <thead>
+        <tr>
+          Online users
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let activity of activities">
+          <td [className]="activity.page == '/lobby' ? 'table-success' : ''">{{ activity.userLogin }}</td>
+          <!--<td>{{ activity.ipAddress }}</td>
+          <td>{{ activity.page }}</td>
+          <td>{{ activity.time | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive col">
+      <table class="table table-striped" aria-describedby="tracker-page-heading">
+        <thead>
+        <tr>
+          Friends
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let activity of activities">
+          <td>{{ activity.userLogin }}</td>
+          <!--<td>{{ activity.ipAddress }}</td>
+          <td>{{ activity.page }}</td>
+          <td>{{ activity.time | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button (click)="askForGame()">Subscribe</button>
+</div>

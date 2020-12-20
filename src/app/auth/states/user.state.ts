@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UserModel } from '../models/user.model';
+import { UserDTO } from "../../shared/swagger-generated";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserState {
-  private userState$: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(null);
+  private roleState: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(null);
   private isLoggedAdmin$:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private userState$: BehaviorSubject<UserDTO> = new BehaviorSubject<UserDTO>(null);
 
-  setUser(user: UserModel): void {
+  setRole(user: UserModel): void {
+    this.roleState.next(user);
+  }
+
+  getRole(): UserModel {
+    return this.roleState.getValue();
+  }
+
+  setUser(user: UserDTO): void {
     this.userState$.next(user);
   }
 
-  get(): UserModel {
+  getUser(): UserDTO {
     return this.userState$.getValue();
   }
 

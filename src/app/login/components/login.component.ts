@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {AuthService} from "../../auth/services/auth.service";
 import {Router} from "@angular/router";
+import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
+import {UserState} from "../../auth/states/user.state";
+import {LobbyService} from "../../lobby/services/lobby.service";
 
 @Component({
   selector: 'app-login',
@@ -22,7 +25,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private accountService: AccountResourceService,
+    private userState: UserState,
+    private lobbyService: LobbyService
   ) {
     this.subscription = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
   }
@@ -32,9 +38,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.lobbyService.disconnect();
     this.userRedirect();
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required/*, Validators.email*/]],
       password: ['', Validators.required],
       rememberMe: [false]
     });
@@ -58,14 +65,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login(loginForm: FormGroup): void {
     this.authService.doLogin({
-      email: loginForm.controls['email'].value,
+      username: loginForm.controls['email'].value,
       password: loginForm.controls['password'].value,
       rememberMe: loginForm.controls['rememberMe'].value
-    }).toPromise()
+    })
+      .toPromise()
       .then((success) => {
         this.disableSubmitButton$.next(false);
         if (success){
-          this.router.navigate(['/lobby']);
+          this.authService.getUser().toPromise().then( (success) => {
+            if(success){
+              this.router.navigate(['/lobby']);
+            }
+          })
         } else {
           this.showError = true;
           this.errorMessage = "Wrong email and password!"
@@ -75,7 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   userRedirect(): void {
-    if (this.authService.getUser()){
+    if (this.authService.getRoles()){
       this.router.navigate(['/lobby']);
     }
   }

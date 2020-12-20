@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, Title} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,7 @@ import {NavBarModule} from "./shared/nav-bar/nav-bar.module";
 import {UserProfileModule} from "./user-profile/user-profile.module";
 import {MatchHistoryModule} from "./match-history/match-history.module";
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,8 @@ import {ResetPasswordModule} from "./reset-password/reset-password.module";
     ResetPasswordModule
   ],
   providers: [
+    Title,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

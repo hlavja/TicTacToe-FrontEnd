@@ -23,7 +23,7 @@
       <li class='nav-item'>
         <a class='nav-link' [routerLink]="['/user-profile', loggedUser.id]">
           <strong>
-            {{ (loggedUser.code).toUpperCase() }}
+            {{ (loggedUser.login).toUpperCase() }}
           </strong>
         </a>
       </li>
@@ -35,6 +35,7 @@
       </ul>
     </ul>
   </div>
+
 </nav>
 
 

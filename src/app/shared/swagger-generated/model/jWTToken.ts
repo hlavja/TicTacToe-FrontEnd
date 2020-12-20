@@ -12,5 +12,5 @@
 
 
 export interface JWTToken {
-    idToken?: string;
+  id_token?: string;
 }

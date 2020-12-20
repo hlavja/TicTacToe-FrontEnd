@@ -5,7 +5,13 @@ import { catchError, map, mapTo, tap } from 'rxjs/operators';
 import { UserModel } from '../models/user.model';
 import { UserState } from '../states/user.state';
 import { Router } from '@angular/router';
-import {LoginVM, JWTToken, User, UserJwtControllerService} from 'src/app/shared/swagger-generated';
+import {
+  LoginVM,
+  JWTToken,
+  User,
+  UserJwtControllerService,
+  AccountResourceService, UserDTO
+} from 'src/app/shared/swagger-generated';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ParsedJwtToken } from '../models/parsed-jwt-token.model';
 
@@ -14,22 +20,23 @@ import { ParsedJwtToken } from '../models/parsed-jwt-token.model';
 })
 export class AuthService {
 
-  private readonly JWT_TOKEN = 'token';
+  private readonly JWT_TOKEN = 'authenticationtoken';
 
   constructor(
     private http: HttpClient,
     private authorizeApi: UserJwtControllerService,
     private userState: UserState,
     private jwt: JwtHelperService,
-    private router: Router
+    private router: Router,
+    private accountService: AccountResourceService
   ) { }
 
   doLogin(credentials: LoginVM): Observable<boolean> {
     return this.authorizeApi.authorizeUsingPOST(credentials, 'body')
       .pipe(
         tap((tokens: JWTToken) => this.storeTokens(tokens)),
-        map((tokens: JWTToken) => this.parseToken(tokens.idToken)),
-        tap(parsedToken => this.setUserFromToken(parsedToken)),
+        map((tokens: JWTToken) => this.parseToken(tokens.id_token)),
+        tap(parsedToken => this.setRolesFromToken(parsedToken)),
         mapTo(true),
         catchError(err => {
           return of<boolean>(false);
@@ -51,38 +58,60 @@ export class AuthService {
   }
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN);
+    return sessionStorage.getItem(this.JWT_TOKEN);
   }
 
   getAdminLogged(): boolean{
     return this.userState.getLoggedAdmin();
   }
 
-  getUser(): UserModel {
-    if(this.userState.get()){
-      return this.userState.get();
+
+  getRoles(): UserModel {
+    if(this.userState.getRole()){
+      return this.userState.getRole();
     } else {
-      return this.setUserFromToken(this.parseToken(this.getJwtToken()));
+      return this.setRolesFromToken(this.parseToken(this.getJwtToken()));
+    }
+  }
+
+  getUserState(): UserDTO {
+    if(this.userState.getUser()){
+      return this.userState.getUser();
+    } else {
+      //TODO dostat data z BE a pak až renderovat nav-bar
+      this.getUser().toPromise().then( (success) => {
+        if(success){
+          return this.userState.getUser();
+        }
+      })
     }
   }
 
   private storeTokens(tokens: JWTToken): void {
-    localStorage.setItem(this.JWT_TOKEN, tokens.idToken);
+    sessionStorage.setItem(this.JWT_TOKEN, tokens.id_token);
   }
 
-  private setUserFromToken(parsedToken: ParsedJwtToken): UserModel {
+  private setRolesFromToken(parsedToken: ParsedJwtToken): UserModel {
     if (parsedToken?.sub && parsedToken?.sub){
       const user: UserModel = {
         code: parsedToken.sub,
         roles: parsedToken.auth,
         id: parsedToken.userId
       };
-      this.userState.setUser(user);
-      /*if(user.roles.indexOf("ROLE_USER") > -1){
-        this.userState.setLoggedAdmin(true);
-      }*/
+      this.userState.setRole(user);
       return user;
     }
+  }
+
+  getUser(){
+    return this.accountService.getAccountUsingGET("body")
+      .pipe(
+        tap(user => this.userState.setUser(user)),
+        mapTo(true),
+        catchError(err => {
+          return of<boolean>(false);
+        })
+    );
   }
 
   private parseToken(token: string): ParsedJwtToken {
@@ -94,6 +123,6 @@ export class AuthService {
   }
 
   private removeTokens() {
-    localStorage.removeItem(this.JWT_TOKEN);
+    sessionStorage.removeItem(this.JWT_TOKEN);
   }
 }

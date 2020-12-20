@@ -24,9 +24,9 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-     if (this.authService.getJwtToken()) {
-       request = this.addToken(request, this.authService.getJwtToken());
-     }
+    if (this.authService.getJwtToken()) {
+      request = AuthInterceptor.addToken(request, this.authService.getJwtToken());
+    }
 
     return next.handle(request)
       .pipe(
@@ -52,7 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return of (null);
   }
 
-  private addToken(request: HttpRequest<any>, token: string) {
+  private static addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`

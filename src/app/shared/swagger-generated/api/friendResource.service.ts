@@ -57,6 +57,55 @@ export class FriendResourceService {
 
 
     /**
+     * addFriend
+     * 
+     * @param addFriendLogin addFriendLogin
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addFriendUsingPOST(addFriendLogin: string, observe?: 'body', reportProgress?: boolean): Observable<FriendDTO>;
+    public addFriendUsingPOST(addFriendLogin: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FriendDTO>>;
+    public addFriendUsingPOST(addFriendLogin: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FriendDTO>>;
+    public addFriendUsingPOST(addFriendLogin: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (addFriendLogin === null || addFriendLogin === undefined) {
+            throw new Error('Required parameter addFriendLogin was null or undefined when calling addFriendUsingPOST.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (addFriendLogin !== undefined && addFriendLogin !== null) {
+            queryParameters = queryParameters.set('addFriendLogin', <any>addFriendLogin);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.post<FriendDTO>(`${this.basePath}/friends/add-friend`,
+            null,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * createFriend
      * 
      * @param friendDTO friendDTO
@@ -213,6 +262,53 @@ export class FriendResourceService {
 
         return this.httpClient.get<FriendDTO>(`${this.basePath}/friends/${encodeURIComponent(String(id))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removeFriend
+     * 
+     * @param friendId friendId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeFriendUsingDELETE(friendId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public removeFriendUsingDELETE(friendId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public removeFriendUsingDELETE(friendId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public removeFriendUsingDELETE(friendId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (friendId === null || friendId === undefined) {
+            throw new Error('Required parameter friendId was null or undefined when calling removeFriendUsingDELETE.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (friendId !== undefined && friendId !== null) {
+            queryParameters = queryParameters.set('friendId', <any>friendId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.delete<any>(`${this.basePath}/friends/remove-friend`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -16,4 +16,5 @@ export interface PlayerDTO {
     friend?: boolean;
     login?: string;
     online?: boolean;
+    playerId?: number;
 }

@@ -8,9 +8,8 @@ import { Router } from '@angular/router';
 import {
   LoginVM,
   JWTToken,
-  User,
   UserJwtControllerService,
-  AccountResourceService, UserDTO
+  UserDTO
 } from 'src/app/shared/swagger-generated';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ParsedJwtToken } from '../models/parsed-jwt-token.model';
@@ -27,8 +26,7 @@ export class AuthService {
     private authorizeApi: UserJwtControllerService,
     private userState: UserState,
     private jwt: JwtHelperService,
-    private router: Router,
-    private accountService: AccountResourceService
+    private router: Router
   ) { }
 
   doLogin(credentials: LoginVM): Observable<boolean> {
@@ -38,7 +36,7 @@ export class AuthService {
         map((tokens: JWTToken) => this.parseToken(tokens.id_token)),
         tap(parsedToken => this.setRolesFromToken(parsedToken)),
         mapTo(true),
-        catchError(err => {
+        catchError(() => {
           return of<boolean>(false);
         })
      );
@@ -53,18 +51,9 @@ export class AuthService {
     return !!this.getJwtToken();
   }
 
-  isTokenExpired(){
-    return this.jwt.isTokenExpired(this.getJwtToken());
-  }
-
   getJwtToken(): string {
     return sessionStorage.getItem(this.JWT_TOKEN);
   }
-
-  getAdminLogged(): boolean{
-    return this.userState.getLoggedAdmin();
-  }
-
 
   getRoles(): UserModel {
     if(this.userState.getRole()){

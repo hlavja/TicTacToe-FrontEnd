@@ -17,10 +17,13 @@
 export interface GameDTO { 
     created?: Date;
     firstPlayerId?: number;
+    firstPlayerLogin?: string;
     gameStatus?: string;
     gameType?: string;
     id?: number;
     result?: string;
     secondPlayerId?: number;
+    secondPlayerLogin?: string;
     winningPlayerId?: number;
+    winningPlayerLogin?: string;
 }

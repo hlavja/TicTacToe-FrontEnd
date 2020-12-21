@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, of, Subscription} from 'rxjs';
 import {AuthService} from "../../auth/services/auth.service";
 import {Router} from "@angular/router";
-import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
+import {AccountResourceService} from "../../shared/swagger-generated";
 import {UserState} from "../../auth/states/user.state";
-import {LobbyService} from "../../lobby/services/lobby.service";
-import {catchError, switchMap} from "rxjs/operators";
+import {WebsocketService} from "../../shared/services/websocket.service";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private accountService: AccountResourceService,
     private userState: UserState,
-    private lobbyService: LobbyService
+    private lobbyService: WebsocketService
   ) {
     this.subscription[0] = this.disableSubmitButton$.subscribe(submitted => this.submitted = submitted);
   }

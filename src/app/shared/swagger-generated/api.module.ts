@@ -10,6 +10,7 @@ import { LobbyResourceService } from './api/lobbyResource.service';
 import { MoveResourceService } from './api/moveResource.service';
 import { UserJwtControllerService } from './api/userJwtController.service';
 import { UserResourceService } from './api/userResource.service';
+import { UserSpecificService } from './api/userSpecific.service';
 
 @NgModule({
   imports:      [],
@@ -22,7 +23,8 @@ import { UserResourceService } from './api/userResource.service';
     LobbyResourceService,
     MoveResourceService,
     UserJwtControllerService,
-    UserResourceService ]
+    UserResourceService,
+    UserSpecificService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

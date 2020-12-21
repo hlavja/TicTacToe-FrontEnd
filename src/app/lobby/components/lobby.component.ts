@@ -1,14 +1,21 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {LobbyService} from "../services/lobby.service";
-import {OnlineUser} from "../model/online-users.model";
+import {Component, OnInit} from '@angular/core';
+import {WebsocketService} from "../../shared/services/websocket.service";
 import {Subscription} from "rxjs";
 import {PlayersState} from "../states/players.state";
-import {LobbyResourceService, PlayerDTO, UserDTO} from "../../shared/swagger-generated";
+import {
+  FriendResourceService,
+  LobbyResourceService,
+  PlayerDTO,
+  UserDTO,
+  UserSpecificService
+} from "../../shared/swagger-generated";
 import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
-import {ContextMenuComponent} from "ngx-contextmenu";
 import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
+import {Message} from "../../shared/model/message.model";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AddFriendComponent} from "../../shared/add-friend/components/add-friend.component";
 
 @Component({
   selector: 'app-lobby',
@@ -16,29 +23,26 @@ import {LoggerService} from "../../shared/services/logger.service";
   styleUrls: ['./lobby.component.scss'],
 })
 export class LobbyComponent implements OnInit {
-  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
-  contextmenu = false;
-  contextmenuX = 0;
-  contextmenuY = 0;
-  contextMenuType;
 
-  private subscription: Subscription[] = [];
-  activities: OnlineUser[] = [];
+  subscription: Subscription[] = [];
   players: PlayerDTO[] = [];
-  private interval: Timeout;
+  interval: Timeout;
   user: UserDTO;
 
   constructor(
-    private lobbyService: LobbyService,
+    private websocketService: WebsocketService,
     private playersState: PlayersState,
     private lobbyPlayerService: LobbyResourceService,
     private authService: AuthService,
-    private logService: LoggerService
+    private logService: LoggerService,
+    private userSpecific: UserSpecificService,
+    private modalService: NgbModal,
+    private friendService: FriendResourceService
   ) {
     this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
       this.players = res;
     });
-    this.lobbyService.connect();
+    this.websocketService.connect();
 
   }
 
@@ -51,7 +55,6 @@ export class LobbyComponent implements OnInit {
   setUser(){
     this.authService.getUserState().subscribe(res => {
       if(res){
-        this.logService.consoleLog(res);
         this.user = res;
         this.getPlayers();
       }
@@ -60,12 +63,17 @@ export class LobbyComponent implements OnInit {
 
   ngOnInit(): void {
     this.setUser();
-    this.lobbyService.subscribe();
+    this.websocketService.subscribe();
 
 
     this.interval = setInterval(() => {
       this.getPlayers();
     }, 5000);
+
+    this.subscription[1] = this.websocketService.receive().subscribe((message: Message) => {
+      this.logService.consoleLog(message)
+      this.handleMessage(message);
+    });
   }
 
   ngOnDestroy(): void {
@@ -73,47 +81,22 @@ export class LobbyComponent implements OnInit {
     clearInterval(this.interval);
   }
 
-  onrightClick(event, action) {
-    this.contextmenuX = event.clientX
-    this.contextmenuY = event.clientY
-    this.contextmenu = true;
-    this.contextMenuType = action;
+  removeFriend(playerId: number){
+    this.friendService.removeFriendUsingDELETE(playerId, "response").toPromise();
   }
 
-  disableContextMenu() {
-    this.contextmenu = false;
-  }
-
-  removeFriend(){
-
-  }
-
-  addFriend(){
-
+  addFriend(playerLogin: string){
+    this.userSpecific.askFriendUsingGET(playerLogin, "body").toPromise();
   }
 
   askGame(){
 
   }
 
-
-
-  showActivity(activity: OnlineUser): void {
-    let existingActivity = false;
-
-    for (let index = 0; index < this.activities.length; index++) {
-      if (this.activities[index].sessionId === activity.sessionId) {
-        existingActivity = true;
-        if (activity.page === 'logout') {
-          this.activities.splice(index, 1);
-        } else {
-          this.activities[index] = activity;
-        }
-      }
-    }
-
-    if (!existingActivity && activity.page !== 'logout') {
-      this.activities.push(activity);
+  handleMessage(message: Message){
+    if (message.messageType === 'ADD_FRIEND'){
+      const modalRef = this.modalService.open(AddFriendComponent)
+      modalRef.componentInstance.message = message;
     }
   }
 }

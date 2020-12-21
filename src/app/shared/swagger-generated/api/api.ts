@@ -12,4 +12,6 @@ export * from './userJwtController.service';
 import { UserJwtControllerService } from './userJwtController.service';
 export * from './userResource.service';
 import { UserResourceService } from './userResource.service';
-export const APIS = [AccountResourceService, FriendResourceService, GameResourceService, LobbyResourceService, MoveResourceService, UserJwtControllerService, UserResourceService];
+export * from './userSpecific.service';
+import { UserSpecificService } from './userSpecific.service';
+export const APIS = [AccountResourceService, FriendResourceService, GameResourceService, LobbyResourceService, MoveResourceService, UserJwtControllerService, UserResourceService, UserSpecificService];

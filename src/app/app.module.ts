@@ -16,6 +16,7 @@ import {CookieService} from "ngx-cookie-service";
 import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {GameModule} from "./game/game.module";
+import {AddFriendModule} from "./shared/add-friend/add-friend.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {GameModule} from "./game/game.module";
     ResetPasswordModule,
     ContextMenuModule,
     NgbModule,
-    GameModule
+    GameModule,
+    AddFriendModule
   ],
   providers: [
     Title,

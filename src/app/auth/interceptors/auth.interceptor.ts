@@ -3,24 +3,19 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpResponse, HttpErrorResponse
+  HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 
-import { catchError, filter, switchMap, take } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { compileNgModule } from '@angular/compiler';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  private isRefreshing = false;
-  private refreshTokenSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-
   constructor(
     public authService: AuthService,
-    private router: Router,
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -31,23 +26,17 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         catchError(err => {
-          /*if ((err instanceof HttpErrorResponse && err.status === 401)) {
-            return this.handle401Error(request, next);
-          } else if ((err instanceof HttpErrorResponse && err.status === 403 || err.status === 504)) {
-            return this.handle403Error(request, next);
-          } else {*/
+          if ((err instanceof HttpErrorResponse && err.status === 504)) {
+            return this.handle504Error(request, next);
+          } else {
             return throwError(err);
-          //}
+          }
         })
       );
   }
 
-  private handle403Error(request: HttpRequest<any>, next: HttpHandler) {
-    this.authService.doLogout();
-    return of (null);
-  }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+  private handle504Error(request: HttpRequest<any>, next: HttpHandler) {
     this.authService.doLogout();
     return of (null);
   }

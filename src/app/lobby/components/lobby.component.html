@@ -1,5 +1,5 @@
 <app-nav-bar [menuItemKey]="1"></app-nav-bar>
-<div class="container-fluid" (click)="disableContextMenu()" oncontextmenu="return false;">
+<div class="container-fluid">
   <br>
   <div>
     <div class="row">
@@ -22,7 +22,7 @@
                     <button (click)="askGame()" type="button" class="btn btn-primary">Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="addFriend()" type="button" class="btn btn-primary">Add friend</button>
+                    <button (click)="addFriend(player.login)" type="button" class="btn btn-primary">Add friend</button>
                   </div>
                 </div>
               </td>
@@ -35,7 +35,7 @@
                     <button (click)="askGame()" type="button" class="btn btn-primary" disabled>Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="addFriend()" type="button" class="btn btn-primary" disabled>Add friend</button>
+                    <button (click)="addFriend(player.login)" type="button" class="btn btn-primary" disabled>Add friend</button>
                   </div>
                 </div>
               </td>
@@ -63,7 +63,7 @@
                     <button (click)="askGame()" type="button" class="btn btn-primary">Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="removeFriend()" type="button" class="btn btn-primary">Remove friend</button>
+                    <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-primary">Remove friend</button>
                   </div>
                 </div>
               </td>
@@ -76,7 +76,7 @@
                     <button (click)="askGame()" type="button" class="btn btn-success" disabled>Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="removeFriend()" type="button" class="btn btn-danger">Remove friend</button>
+                    <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-danger">Remove friend</button>
                   </div>
                 </div>
               </td>

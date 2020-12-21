@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { UserModel } from '../models/user.model';
 import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
-import {catchError, mapTo, tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserState {
   private roleState: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(null);
-  private isLoggedAdmin$:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private userState$: BehaviorSubject<UserDTO> = new BehaviorSubject<UserDTO>(null);
 
   constructor(
@@ -39,13 +37,5 @@ export class UserState {
         .subscribe(res => this.setUser(res));
     }
     return this.userState$.asObservable();
-  }
-
-  setLoggedAdmin(adminLogged: boolean): void{
-    this.isLoggedAdmin$.next(adminLogged);
-  }
-
-  getLoggedAdmin(): boolean{
-    return this.isLoggedAdmin$.getValue();
   }
 }

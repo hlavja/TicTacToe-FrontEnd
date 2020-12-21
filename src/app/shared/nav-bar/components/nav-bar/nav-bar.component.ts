@@ -1,10 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {UserModel} from "../../../../auth/models/user.model";
-import {UserState} from "../../../../auth/states/user.state";
 import {AuthService} from "../../../../auth/services/auth.service";
-import {User, UserDTO} from "../../../swagger-generated";
+import {UserDTO} from "../../../swagger-generated";
 import {Subscription} from "rxjs";
-import {log} from "util";
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,8 +14,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   loggedUser: UserDTO;
   subscription: Subscription[] = [];
   constructor(
-    private authService: AuthService,
-    private userState: UserState,
+    private authService: AuthService
   ) {
   }
 

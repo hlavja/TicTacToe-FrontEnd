@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, NavigationEnd, Event } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
-import {OnlineUser} from "../model/online-users.model";
+import {Message} from "../model/message.model";
 
 
 @Injectable({ providedIn: 'root' })
-export class LobbyService {
+export class WebsocketService {
   private stompClient: Stomp.Client | null = null;
   private routerSubscription: Subscription | null = null;
   private connectionSubject: ReplaySubject<void> = new ReplaySubject(1);
   private connectionSubscription: Subscription | null = null;
   private stompSubscription: Stomp.Subscription | null = null;
-  private listenerSubject: Subject<OnlineUser> = new Subject();
+  private listenerSubject: Subject<Message> = new Subject();
   private readonly JWT_TOKEN = 'authenticationtoken';
   private sessionId: string = '';
 
@@ -42,15 +41,7 @@ export class LobbyService {
       let urlarray = socket._transport.url.split('/');
       var index = urlarray.length - 2;
       this.sessionId = urlarray[index];
-      console.log(this.sessionId);
       this.connectionSubject.next();
-
-      //this.sendActivity();
-      this.sendActivity2();
-
-      /*this.routerSubscription = this.router.events
-        .pipe(filter((event: Event) => event instanceof NavigationEnd))
-        .subscribe(() => this.sendActivity2());*/
     });
   }
 
@@ -72,7 +63,7 @@ export class LobbyService {
     }
   }
 
-  receive(): Subject<OnlineUser> {
+  receive(): Subject<Message> {
     return this.listenerSubject;
   }
 
@@ -83,7 +74,6 @@ export class LobbyService {
 
     this.connectionSubscription = this.connectionSubject.subscribe(() => {
       if (this.stompClient) {
-        //this.stompSubscription = this.stompClient.subscribe('/topic/tracker', (data: Stomp.Message) => {
         this.stompSubscription = this.stompClient.subscribe('/secured/user/queue/specific-user-user' + this.sessionId, (data: Stomp.Message) => {
           this.listenerSubject.next(JSON.parse(data.body));
         });
@@ -103,20 +93,9 @@ export class LobbyService {
     }
   }
 
-  private sendActivity(): void {
-    if (this.stompClient && this.stompClient.connected) {
-      this.stompClient.send(
-        '/topic/activity', // destination
-        JSON.stringify({ page: this.router.routerState.snapshot.url }), // body
-        {} // header
-      );
-    }
-  }
-
   sendActivity2(): void {
-    console.log("aa")
     if (this.stompClient && this.stompClient.connected) {
-      console.log("bb")
+
       this.stompClient.send(
         '/secured/player-action', // destination
         JSON.stringify({ senderLogin: "user@localhost", messageType: "CREATE_GAME", opponentLogin: "user@localhost" }), // body

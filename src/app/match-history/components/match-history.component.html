@@ -1,4 +1,35 @@
 <app-nav-bar [menuItemKey]="2"></app-nav-bar>
-<div>
-aa
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <h1>Games results</h1>
+    </div>
+    <div class="col-6 text-right justify-content-center align-items-right align-self-center">
+      <button (click)="refreshData()" type="button" class="btn btn-primary">Refresh results</button>
+    </div>
+    <br>
+    <br>
+  </div>
+  <table class="table table-striped" aria-describedby="tracker-page-heading">
+    <thead>
+    <tr>
+      <th>First Player</th>
+      <th>Second Player</th>
+      <th>Date</th>
+      <th>Type</th>
+      <th>Result</th>
+      <th>Winner</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let game of games">
+      <td>{{ game.firstPlayerLogin }}</td>
+      <td>{{ game.secondPlayerLogin }}</td>
+      <td>{{ game.created | date: "dd. MM. yyyy" }}</td>
+      <td>{{ game.gameType }}</td>
+      <td [ngClass]="game.result === 'WON' ? 'text-success' : 'text-warning'">{{ game.result }}</td>
+      <td>{{ game.result === 'WON' ? game.firstPlayerLogin : '-'}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>

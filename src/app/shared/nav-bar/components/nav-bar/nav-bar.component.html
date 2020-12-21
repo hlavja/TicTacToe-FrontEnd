@@ -14,7 +14,7 @@
            [routerLink]="['/lobby']">Lobby</a>
       </li>
       <li [className]="menuItemKey == 2 ? 'nav-item active' : 'nav-item'">
-        <a class="nav-link" [routerLink]="['/match-history/user', loggedUser.id]"  *ngIf="loggedUser">
+        <a class="nav-link" [routerLink]="['/match-history']" >
           Match history
         </a>
       </li>

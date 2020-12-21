@@ -38,7 +38,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.settingsForm = this.fb.group({
       lastName: [undefined],
       firstName: [undefined],
-      email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     });
     this.passwordForm = this.fb.group({
       currentPassword: ['', [Validators.required]],
@@ -54,7 +53,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   updateUser(){
     const changedUser: UserDTO = {
-      email: this.settingsForm.controls['email'].value,
+      firstName: this.settingsForm.controls['firstName'].value,
+      lastName: this.settingsForm.controls['lastName'].value,
+      login: this.user.login
     }
     console.log(changedUser);
     this.accountService.saveAccountUsingPOST(changedUser, "response").pipe(
@@ -118,7 +119,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.authService.getUserState().subscribe(res => {
       if(res){
         this.user = res;
-        this.settingsForm.controls['email'].setValue(res.email);
+        this.settingsForm.controls['firstName'].setValue(res.firstName);
+        this.settingsForm.controls['lastName'].setValue(res.lastName);
       }
     });
   }

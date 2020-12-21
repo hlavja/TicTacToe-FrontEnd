@@ -32,7 +32,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        username: ['', [Validators.required], this.customValidator.userNameValidator.bind(this.customValidator)],
         password: ['', Validators.compose([Validators.required, this.customValidator.patternValidator()])],
         confirmPassword: ['', [Validators.required]],
       },
@@ -59,8 +58,8 @@ export class RegisterComponent implements OnInit {
 
   register(registerForm: FormGroup): void {
     const managedUserVM: ManagedUserVM = {
+      login: registerForm.controls['email'].value,
       email: registerForm.controls['email'].value,
-      login: registerForm.controls['username'].value,
       password: registerForm.controls['password'].value
     }
     this.accountService.registerAccountUsingPOST(managedUserVM, "response").pipe(

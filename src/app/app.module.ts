@@ -15,6 +15,7 @@ import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {CookieService} from "ngx-cookie-service";
 import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {GameModule} from "./game/game.module";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatchHistoryModule,
     ResetPasswordModule,
     ContextMenuModule,
-    NgbModule
+    NgbModule,
+    GameModule
   ],
   providers: [
     Title,

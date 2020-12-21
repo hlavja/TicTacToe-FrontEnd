@@ -8,6 +8,7 @@ import {RoleGuard} from "./auth/guards/role.guard";
 import {UserProfileComponent} from "./user-profile/components/user-profile/user-profile.component";
 import {MatchHistoryComponent} from "./match-history/components/match-history.component";
 import {ResetPasswordComponent} from "./reset-password/components/reset-password/reset-password.component";
+import {GameComponent} from "./game/components/game.component";
 
 const routes: Routes = [
   {
@@ -33,8 +34,16 @@ const routes: Routes = [
     }
   }, {
     canActivate: [AuthGuard, RoleGuard],
-    path: 'match-history/user/:id',
+    path: 'match-history',
     component: MatchHistoryComponent,
+    pathMatch: 'full',
+    data: {
+      expectedRole: ['ROLE_ADMIN', 'ROLE_USER']
+    }
+  }, {
+    canActivate: [AuthGuard, RoleGuard],
+    path: 'game/:id',
+    component: GameComponent,
     pathMatch: 'full',
     data: {
       expectedRole: ['ROLE_ADMIN', 'ROLE_USER']

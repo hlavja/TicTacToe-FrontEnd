@@ -119,7 +119,7 @@ export class LobbyService {
       console.log("bb")
       this.stompClient.send(
         '/secured/player-action', // destination
-        JSON.stringify({ senderLogin: "user", messageType: "CREATE_GAME", opponentLogin: "user" }), // body
+        JSON.stringify({ senderLogin: "user@localhost", messageType: "CREATE_GAME", opponentLogin: "user@localhost" }), // body
         {} // header
       );
     }

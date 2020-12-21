@@ -8,6 +8,7 @@ import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
 import {ContextMenuComponent} from "ngx-contextmenu";
 import {AuthService} from "../../auth/services/auth.service";
+import {LoggerService} from "../../shared/services/logger.service";
 
 @Component({
   selector: 'app-lobby',
@@ -31,7 +32,8 @@ export class LobbyComponent implements OnInit {
     private lobbyService: LobbyService,
     private playersState: PlayersState,
     private lobbyPlayerService: LobbyResourceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private logService: LoggerService
   ) {
     this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
       this.players = res;
@@ -49,6 +51,7 @@ export class LobbyComponent implements OnInit {
   setUser(){
     this.authService.getUserState().subscribe(res => {
       if(res){
+        this.logService.consoleLog(res);
         this.user = res;
         this.getPlayers();
       }
@@ -79,6 +82,18 @@ export class LobbyComponent implements OnInit {
 
   disableContextMenu() {
     this.contextmenu = false;
+  }
+
+  removeFriend(){
+
+  }
+
+  addFriend(){
+
+  }
+
+  askGame(){
+
   }
 
 

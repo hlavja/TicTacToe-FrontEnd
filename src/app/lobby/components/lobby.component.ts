@@ -101,8 +101,12 @@ export class LobbyComponent implements OnInit {
 
   handleMessage(message: Message){
     if (message.messageType === 'ADD_FRIEND'){
-      this.friendRequestWindow = this.modalService.open(AddFriendComponent)
+      this.friendRequestWindow = this.modalService.open(AddFriendComponent);
       this.friendRequestWindow.componentInstance.message = message;
+      //the navazuji na promisu
+      this.friendRequestWindow.result.then(
+        result => this.players.find(item => item.login === result).friend = true
+      );
     }
     if (message.messageType === 'GAME_CHALLENGE'){
       this.gameChallengeWindow = this.modalService.open(GameChallengeComponent)

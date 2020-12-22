@@ -25,6 +25,10 @@
       "description": "Game Resource"
     },
     {
+      "name": "lobby-resource",
+      "description": "Lobby Resource"
+    },
+    {
       "name": "move-resource",
       "description": "Move Resource"
     },
@@ -35,6 +39,10 @@
     {
       "name": "user-resource",
       "description": "User Resource"
+    },
+    {
+      "name": "user-specific",
+      "description": "User Specific"
     }
   ],
   "paths": {
@@ -476,6 +484,124 @@
         "deprecated": false
       }
     },
+    "/friends/add-friend": {
+      "post": {
+        "tags": [
+          "friend-resource"
+        ],
+        "summary": "addFriend",
+        "operationId": "addFriendUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "addFriendLogin",
+            "in": "query",
+            "description": "addFriendLogin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FriendDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/friends/ask-friend": {
+      "get": {
+        "tags": [
+          "user-specific"
+        ],
+        "summary": "askFriend",
+        "operationId": "askFriendUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "friendLogin",
+            "in": "query",
+            "description": "friendLogin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/friends/remove-friend": {
+      "delete": {
+        "tags": [
+          "friend-resource"
+        ],
+        "summary": "removeFriend",
+        "operationId": "removeFriendUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "friendId",
+            "in": "query",
+            "description": "friendId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/friends/{id}": {
       "get": {
         "tags": [
@@ -674,6 +800,81 @@
         "deprecated": false
       }
     },
+    "/games/accept": {
+      "get": {
+        "tags": [
+          "game-resource"
+        ],
+        "summary": "acceptGame",
+        "operationId": "acceptGameUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "opponentLogin",
+            "in": "query",
+            "description": "opponentLogin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/MessageDTO"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/games/challenge": {
+      "get": {
+        "tags": [
+          "game-resource"
+        ],
+        "summary": "challengeGame",
+        "operationId": "challengeGameUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "opponentLogin",
+            "in": "query",
+            "description": "opponentLogin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/games/{id}": {
       "get": {
         "tags": [
@@ -744,6 +945,49 @@
           },
           "403": {
             "description": "Forbidden"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/get-players": {
+      "get": {
+        "tags": [
+          "lobby-resource"
+        ],
+        "summary": "getOnlineUsers",
+        "operationId": "getOnlineUsersUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlayerDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "deprecated": false
@@ -1278,6 +1522,9 @@
           "type": "integer",
           "format": "int64"
         },
+        "firstPlayerLogin": {
+          "type": "string"
+        },
         "gameStatus": {
           "type": "string"
         },
@@ -1295,9 +1542,15 @@
           "type": "integer",
           "format": "int64"
         },
+        "secondPlayerLogin": {
+          "type": "string"
+        },
         "winningPlayerId": {
           "type": "integer",
           "format": "int64"
+        },
+        "winningPlayerLogin": {
+          "type": "string"
         }
       },
       "title": "GameDTO",
@@ -1327,15 +1580,10 @@
     "LoginVM": {
       "type": "object",
       "required": [
-        "email",
-        "password"
+        "password",
+        "username"
       ],
       "properties": {
-        "email": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 50
-        },
         "password": {
           "type": "string",
           "minLength": 4,
@@ -1343,6 +1591,11 @@
         },
         "rememberMe": {
           "type": "boolean"
+        },
+        "username": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
         }
       },
       "title": "LoginVM"
@@ -1416,6 +1669,21 @@
       },
       "title": "ManagedUserVM"
     },
+    "MessageDTO": {
+      "type": "object",
+      "properties": {
+        "messageType": {
+          "type": "string"
+        },
+        "opponentLogin": {
+          "type": "string"
+        },
+        "senderLogin": {
+          "type": "string"
+        }
+      },
+      "title": "MessageDTO"
+    },
     "MoveDTO": {
       "type": "object",
       "properties": {
@@ -1458,6 +1726,28 @@
         }
       },
       "title": "PasswordChangeDTO"
+    },
+    "PlayerDTO": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "friend": {
+          "type": "boolean"
+        },
+        "login": {
+          "type": "string"
+        },
+        "online": {
+          "type": "boolean"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PlayerDTO"
     },
     "User": {
       "type": "object",

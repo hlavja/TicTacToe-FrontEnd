@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { GameDTO } from '../model/gameDTO';
+import { MessageDTO } from '../model/messageDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -55,6 +56,100 @@ export class GameResourceService {
         return false;
     }
 
+
+    /**
+     * acceptGame
+     * 
+     * @param opponentLogin opponentLogin
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public acceptGameUsingGET(opponentLogin: string, observe?: 'body', reportProgress?: boolean): Observable<MessageDTO>;
+    public acceptGameUsingGET(opponentLogin: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MessageDTO>>;
+    public acceptGameUsingGET(opponentLogin: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MessageDTO>>;
+    public acceptGameUsingGET(opponentLogin: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (opponentLogin === null || opponentLogin === undefined) {
+            throw new Error('Required parameter opponentLogin was null or undefined when calling acceptGameUsingGET.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (opponentLogin !== undefined && opponentLogin !== null) {
+            queryParameters = queryParameters.set('opponentLogin', <any>opponentLogin);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<MessageDTO>(`${this.basePath}/games/accept`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * challengeGame
+     * 
+     * @param opponentLogin opponentLogin
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public challengeGameUsingGET(opponentLogin: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public challengeGameUsingGET(opponentLogin: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public challengeGameUsingGET(opponentLogin: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public challengeGameUsingGET(opponentLogin: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (opponentLogin === null || opponentLogin === undefined) {
+            throw new Error('Required parameter opponentLogin was null or undefined when calling challengeGameUsingGET.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (opponentLogin !== undefined && opponentLogin !== null) {
+            queryParameters = queryParameters.set('opponentLogin', <any>opponentLogin);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<any>(`${this.basePath}/games/challenge`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * createGame

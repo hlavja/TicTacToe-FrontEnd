@@ -5,6 +5,7 @@ import {PlayersState} from "../states/players.state";
 import {
   FriendResourceService,
   LobbyResourceService,
+  MessageDTO,
   PlayerDTO,
   UserDTO,
   UserSpecificService
@@ -13,7 +14,6 @@ import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
 import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
-import {Message} from "../../shared/model/message.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddFriendComponent} from "../../shared/pop-outs/components/add-friend/add-friend.component";
 import {GameChallengeComponent} from "../../shared/pop-outs/components/game-challenge/game-challenge.component";
@@ -75,8 +75,7 @@ export class LobbyComponent implements OnInit {
       this.getPlayers();
     }, 5000);
 
-    this.subscription[1] = this.websocketService.receive().subscribe((message: Message) => {
-      this.logService.consoleLog(message)
+    this.subscription[1] = this.websocketService.receive().subscribe((message: MessageDTO) => {
       this.handleMessage(message);
     });
   }
@@ -99,11 +98,11 @@ export class LobbyComponent implements OnInit {
     this.waitWindow.open(WaitWindowComponent);
   }
 
-  handleMessage(message: Message){
+  handleMessage(message: MessageDTO){
     if (message.messageType === 'ADD_FRIEND'){
       this.friendRequestWindow = this.modalService.open(AddFriendComponent);
       this.friendRequestWindow.componentInstance.message = message;
-      //the navazuji na promisu
+      //.the() called after promise is done
       this.friendRequestWindow.result.then(
         result => this.players.find(item => item.login === result).friend = true
       );

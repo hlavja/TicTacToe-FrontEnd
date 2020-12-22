@@ -16,7 +16,7 @@ import {CookieService} from "ngx-cookie-service";
 import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {GameModule} from "./game/game.module";
-import {AddFriendModule} from "./shared/add-friend/add-friend.module";
+import {PopOutsModule} from "./shared/pop-outs/pop-outs.module";
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import {AddFriendModule} from "./shared/add-friend/add-friend.module";
     ContextMenuModule,
     NgbModule,
     GameModule,
-    AddFriendModule
+    PopOutsModule
   ],
   providers: [
     Title,

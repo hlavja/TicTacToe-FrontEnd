@@ -15,7 +15,9 @@ import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
 import {Message} from "../../shared/model/message.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddFriendComponent} from "../../shared/add-friend/components/add-friend.component";
+import {AddFriendComponent} from "../../shared/pop-outs/components/add-friend/add-friend.component";
+import {GameChallengeComponent} from "../../shared/pop-outs/components/game-challenge/game-challenge.component";
+import {WaitWindowComponent} from "../../shared/pop-outs/components/wait-window/wait-window.component";
 
 @Component({
   selector: 'app-lobby',
@@ -28,6 +30,9 @@ export class LobbyComponent implements OnInit {
   players: PlayerDTO[] = [];
   interval: Timeout;
   user: UserDTO;
+  waitWindow;
+  friendRequestWindow;
+  gameChallengeWindow;
 
   constructor(
     private websocketService: WebsocketService,
@@ -83,6 +88,7 @@ export class LobbyComponent implements OnInit {
 
   removeFriend(playerId: number){
     this.friendService.removeFriendUsingDELETE(playerId, "response").toPromise();
+    this.players.find(item => item.playerId === playerId).friend = false;
   }
 
   addFriend(playerLogin: string){
@@ -90,13 +96,25 @@ export class LobbyComponent implements OnInit {
   }
 
   askGame(){
-
+    this.waitWindow.open(WaitWindowComponent);
   }
 
   handleMessage(message: Message){
     if (message.messageType === 'ADD_FRIEND'){
-      const modalRef = this.modalService.open(AddFriendComponent)
-      modalRef.componentInstance.message = message;
+      this.friendRequestWindow = this.modalService.open(AddFriendComponent)
+      this.friendRequestWindow.componentInstance.message = message;
+    }
+    if (message.messageType === 'GAME_CHALLENGE'){
+      this.gameChallengeWindow = this.modalService.open(GameChallengeComponent)
+      this.gameChallengeWindow.componentInstance.message = message;
+    }
+    if (message.messageType === 'GAME_ACCEPTED'){
+      this.waitWindow.componentInstance.accepted = true;
+      if (this.waitWindow){
+        setTimeout(() =>{
+          this.waitWindow.close();
+        }, 1500);
+      }
     }
   }
 }

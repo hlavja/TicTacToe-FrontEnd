@@ -1,0 +1,40 @@
+.hoverX:hover {
+  background-image: url("src/assets/images/cros.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  background-position: center;
+}
+
+.hoverO:hover {
+  background-image: url("src/assets/images/dot.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  background-position: center;
+}
+
+.backgroundX {
+  background-image: url("src/assets/images/cros.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.backgroundO {
+  background-image: url("src/assets/images/dot.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+td {
+  height: 0;
+
+  &:after, &:before {
+    content: '';
+
+    display: block;
+    padding-bottom: calc(50% - 0.5em);
+  }
+}

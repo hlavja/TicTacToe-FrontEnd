@@ -92,4 +92,4 @@
 <app-add-friend [(showPopup)]="showAddFriend" [message]="message" (emitAcceptUserLogin)="completeAddFriend($event)"></app-add-friend>
 <app-game-challenge [(showPopup)]="showGameChallenge" [message]="message" (emitAcceptUserLogin)="completeGameChallenge($event)"></app-game-challenge>
 <app-wait-game  [(showPopup)]="showWaitGame" [opponentLogin]="waitingFor" [status]="status"></app-wait-game>
-<app-board [showPopup]="showGameBoard" [message]="message"></app-board>
+<app-board [board]="board" [(showPopup)]="showGameBoard" [message]="message"></app-board>

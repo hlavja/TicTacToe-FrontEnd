@@ -33,6 +33,7 @@ export class LobbyComponent implements OnInit {
   message: MessageDTO = {};
   status: string;
   waitingFor: string = 'WAITING';
+  board: string[][] = [];
 
   constructor(
     private websocketService: WebsocketService,
@@ -48,7 +49,10 @@ export class LobbyComponent implements OnInit {
       this.players = res;
     });
     this.websocketService.connect();
-
+    for (let i = 0; i < 3; i++) {
+      this.board.push(["","",""])
+    }
+    console.log(this.board)
   }
 
   getPlayers(): void{
@@ -106,10 +110,11 @@ export class LobbyComponent implements OnInit {
   }
 
   askGame(playerLogin: string){
-    this.gameService.challengeGameUsingGET(playerLogin, "body").toPromise();
-    this.showWaitGame = true;
-    this.status = 'WAITING';
-    this.waitingFor = playerLogin;
+    //this.gameService.challengeGameUsingGET(playerLogin, "body").toPromise();
+    //this.showWaitGame = true;
+    //this.status = 'WAITING';
+    //this.waitingFor = playerLogin;
+    this.showGameBoard = true;
   }
 
   handleMessage(message: MessageDTO){
@@ -126,6 +131,7 @@ export class LobbyComponent implements OnInit {
     if (message.messageType === 'GAME_ACCEPTED'){
       this.status = "ACCEPTED";
       this.terminateWaiting();
+
     }
     if (message.messageType === 'GAME_REJECTED'){
       this.status = "REJECTED";

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
-import {Message} from "../model/message.model";
+import {MessageDTO} from "../swagger-generated";
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +14,7 @@ export class WebsocketService {
   private connectionSubject: ReplaySubject<void> = new ReplaySubject(1);
   private connectionSubscription: Subscription | null = null;
   private stompSubscription: Stomp.Subscription | null = null;
-  private listenerSubject: Subject<Message> = new Subject();
+  private listenerSubject: Subject<MessageDTO> = new Subject();
   private readonly JWT_TOKEN = 'authenticationtoken';
   private sessionId: string = '';
 
@@ -63,7 +63,7 @@ export class WebsocketService {
     }
   }
 
-  receive(): Subject<Message> {
+  receive(): Subject<MessageDTO> {
     return this.listenerSubject;
   }
 

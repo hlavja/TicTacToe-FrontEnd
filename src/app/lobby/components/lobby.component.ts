@@ -3,7 +3,7 @@ import {WebsocketService} from "../../shared/services/websocket.service";
 import {Subscription} from "rxjs";
 import {PlayersState} from "../states/players.state";
 import {
-  FriendResourceService,
+  FriendResourceService, GameResourceService,
   LobbyResourceService,
   MessageDTO,
   PlayerDTO,
@@ -14,10 +14,6 @@ import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
 import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddFriendComponent} from "../../shared/pop-outs/components/add-friend/add-friend.component";
-import {GameChallengeComponent} from "../../shared/pop-outs/components/game-challenge/game-challenge.component";
-import {WaitWindowComponent} from "../../shared/pop-outs/components/wait-window/wait-window.component";
 
 @Component({
   selector: 'app-lobby',
@@ -30,9 +26,13 @@ export class LobbyComponent implements OnInit {
   players: PlayerDTO[] = [];
   interval: Timeout;
   user: UserDTO;
-  waitWindow;
-  friendRequestWindow;
-  gameChallengeWindow;
+  showAddFriend = false;
+  showWaitGame = false;
+  showGameChallenge = false;
+  showGameBoard = false;
+  message: MessageDTO = {};
+  status: string;
+  waitingFor: string = 'WAITING';
 
   constructor(
     private websocketService: WebsocketService,
@@ -41,8 +41,8 @@ export class LobbyComponent implements OnInit {
     private authService: AuthService,
     private logService: LoggerService,
     private userSpecific: UserSpecificService,
-    private modalService: NgbModal,
-    private friendService: FriendResourceService
+    private friendService: FriendResourceService,
+    private gameService: GameResourceService
   ) {
     this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
       this.players = res;
@@ -76,6 +76,7 @@ export class LobbyComponent implements OnInit {
     }, 5000);
 
     this.subscription[1] = this.websocketService.receive().subscribe((message: MessageDTO) => {
+      this.message = message;
       this.handleMessage(message);
     });
   }
@@ -86,6 +87,7 @@ export class LobbyComponent implements OnInit {
   }
 
   removeFriend(playerId: number){
+    //TODO CONFIRMATION!!
     this.friendService.removeFriendUsingDELETE(playerId, "response").toPromise();
     this.players.find(item => item.playerId === playerId).friend = false;
   }
@@ -94,30 +96,47 @@ export class LobbyComponent implements OnInit {
     this.userSpecific.askFriendUsingGET(playerLogin, "body").toPromise();
   }
 
-  askGame(){
-    this.waitWindow.open(WaitWindowComponent);
+  completeAddFriend(login: string){
+    this.players.find(item => item.login === login).friend = true;
+  }
+
+  completeGameChallenge(login: string){
+    console.log("start game!")
+    this.showGameBoard = true;
+  }
+
+  askGame(playerLogin: string){
+    this.gameService.challengeGameUsingGET(playerLogin, "body").toPromise();
+    this.showWaitGame = true;
+    this.status = 'WAITING';
+    this.waitingFor = playerLogin;
   }
 
   handleMessage(message: MessageDTO){
     if (message.messageType === 'ADD_FRIEND'){
-      this.friendRequestWindow = this.modalService.open(AddFriendComponent);
-      this.friendRequestWindow.componentInstance.message = message;
-      //.the() called after promise is done
-      this.friendRequestWindow.result.then(
-        result => this.players.find(item => item.login === result).friend = true
-      );
+      this.showAddFriend = true;
     }
     if (message.messageType === 'GAME_CHALLENGE'){
-      this.gameChallengeWindow = this.modalService.open(GameChallengeComponent)
-      this.gameChallengeWindow.componentInstance.message = message;
-    }
-    if (message.messageType === 'GAME_ACCEPTED'){
-      this.waitWindow.componentInstance.accepted = true;
-      if (this.waitWindow){
-        setTimeout(() =>{
-          this.waitWindow.close();
-        }, 1500);
+      if (this.showGameChallenge || this.showWaitGame){
+        //TODO reject invitational
+      } else {
+        this.showGameChallenge = true;
       }
     }
+    if (message.messageType === 'GAME_ACCEPTED'){
+      this.status = "ACCEPTED";
+      this.terminateWaiting();
+    }
+    if (message.messageType === 'GAME_REJECTED'){
+      this.status = "REJECTED";
+      this.terminateWaiting()
+    }
+  }
+
+  terminateWaiting(){
+    setTimeout(() =>{
+      this.showWaitGame = false;
+      this.status = 'WAITING';
+    }, 1000);
   }
 }

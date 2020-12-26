@@ -1,0 +1,24 @@
+<p-dialog header="" [closable]="false" [(visible)]="showPopup" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <p-header>
+    <div>
+      <h1>Friend request!</h1>
+    </div>
+  </p-header>
+  <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
+    <p>
+      User  <b>{{message.senderLogin}}</b> wants to be your friend!
+      <br>
+      Accept or reject friend request!
+    </p>
+  </div>
+  <br>
+  <p-footer>
+    <div class="row justify-content-end align-items-center">
+      <div>
+        <p-button (click)="accept()" type="submit" label="Accept" class="pr-2"></p-button>
+        <p-button (click)="reject()" label="Reject" class="pr-2"></p-button>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+

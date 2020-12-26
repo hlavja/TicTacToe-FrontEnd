@@ -1,0 +1,22 @@
+<p-dialog header="" [closable]="true" [(visible)]="showPopup" [modal]="true" [style]="{minWidth: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <p-header>
+    Invitational sent!
+  </p-header>
+  <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
+    <p>
+      Waiting for <b>{{opponentLogin}}</b> response ...
+    </p>
+    <h2 *ngIf="status === 'REJECTED'" style="color: red">
+      {{status}}
+    </h2>
+
+    <h2 *ngIf="status === 'ACCEPTED'" style="color: green">
+      {{status}}
+    </h2>
+
+    <h2 *ngIf="status === 'WAITING'">
+      {{status}}
+    </h2>
+  </div>
+  <br>
+</p-dialog>

@@ -19,7 +19,7 @@
                     {{ player.login }}
                   </div>
                   <div class="col">
-                    <button (click)="askGame()" type="button" class="btn btn-primary">Game</button>
+                    <button (click)="askGame(player.login)" type="button" class="btn btn-primary">Game</button>
                   </div>
                   <div class="col">
                     <button (click)="addFriend(player.login)" type="button" class="btn btn-primary">Add friend</button>
@@ -32,7 +32,7 @@
                     {{ player.login }}
                   </div>
                   <div class="col">
-                    <button (click)="askGame()" type="button" class="btn btn-primary" disabled>Game</button>
+                    <button (click)="askGame(player.login)" type="button" class="btn btn-primary" disabled>Game</button>
                   </div>
                   <div class="col">
                     <button (click)="addFriend(player.login)" type="button" class="btn btn-primary" disabled>Add friend</button>
@@ -60,7 +60,7 @@
                     {{ player.login }}
                   </div>
                   <div class="col">
-                    <button (click)="askGame()" type="button" class="btn btn-primary">Game</button>
+                    <button (click)="askGame(player.login)" type="button" class="btn btn-primary">Game</button>
                   </div>
                   <div class="col">
                     <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-primary">Remove friend</button>
@@ -73,7 +73,7 @@
                     {{ player.login }}
                   </div>
                   <div class="col">
-                    <button (click)="askGame()" type="button" class="btn btn-success" disabled>Game</button>
+                    <button (click)="askGame(player.login)" type="button" class="btn btn-success" disabled>Game</button>
                   </div>
                   <div class="col">
                     <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-danger">Remove friend</button>
@@ -88,3 +88,8 @@
     </div>
   </div>
 </div>
+
+<app-add-friend [(showPopup)]="showAddFriend" [message]="message" (emitAcceptUserLogin)="completeAddFriend($event)"></app-add-friend>
+<app-game-challenge [(showPopup)]="showGameChallenge" [message]="message" (emitAcceptUserLogin)="completeGameChallenge($event)"></app-game-challenge>
+<app-wait-game  [(showPopup)]="showWaitGame" [opponentLogin]="waitingFor" [status]="status"></app-wait-game>
+<app-board [showPopup]="showGameBoard" [message]="message"></app-board>

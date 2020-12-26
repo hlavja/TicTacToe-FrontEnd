@@ -13,10 +13,8 @@ import {UserProfileModule} from "./user-profile/user-profile.module";
 import {MatchHistoryModule} from "./match-history/match-history.module";
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {CookieService} from "ngx-cookie-service";
-import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {GameModule} from "./game/game.module";
-import {PopOutsModule} from "./shared/pop-outs/pop-outs.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,6 +22,7 @@ import {PopOutsModule} from "./shared/pop-outs/pop-outs.module";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     LoginModule,
     RegisterModule,
@@ -34,15 +33,11 @@ import {PopOutsModule} from "./shared/pop-outs/pop-outs.module";
     UserProfileModule,
     MatchHistoryModule,
     ResetPasswordModule,
-    ContextMenuModule,
-    NgbModule,
     GameModule,
-    PopOutsModule
   ],
   providers: [
     Title,
-    CookieService,
-    ContextMenuService
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

@@ -43,6 +43,7 @@ export class AuthService {
   }
 
   doLogout(): void {
+    this.userState.setUser(null);
     this.removeTokens();
     this.router.navigate(['/login']);
   }

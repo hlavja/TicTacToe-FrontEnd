@@ -3,7 +3,7 @@ import {WebsocketService} from "../../shared/services/websocket.service";
 import {Subscription} from "rxjs";
 import {PlayersState} from "../states/players.state";
 import {
-  FriendResourceService, GameResourceService,
+  FriendResourceService, GameDTO, GameResourceService,
   LobbyResourceService,
   MessageDTO,
   PlayerDTO,
@@ -14,6 +14,7 @@ import {tap} from "rxjs/operators";
 import Timeout = NodeJS.Timeout;
 import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
+import {GameInfo} from "../models/game-info";
 
 @Component({
   selector: 'app-lobby',
@@ -22,6 +23,7 @@ import {LoggerService} from "../../shared/services/logger.service";
 })
 export class LobbyComponent implements OnInit {
 
+  friendToRemove: PlayerDTO;
   subscription: Subscription[] = [];
   players: PlayerDTO[] = [];
   interval: Timeout;
@@ -30,10 +32,11 @@ export class LobbyComponent implements OnInit {
   showWaitGame = false;
   showGameChallenge = false;
   showGameBoard = false;
+  showRemoveConfirmation = false;
   message: MessageDTO = {};
   status: string;
   waitingFor: string = 'WAITING';
-  board: string[][] = [];
+  actualGameInfo: GameInfo = {};
 
   constructor(
     private websocketService: WebsocketService,
@@ -43,16 +46,12 @@ export class LobbyComponent implements OnInit {
     private logService: LoggerService,
     private userSpecific: UserSpecificService,
     private friendService: FriendResourceService,
-    private gameService: GameResourceService
+    private gameService: GameResourceService,
   ) {
     this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
       this.players = res;
     });
     this.websocketService.connect();
-    for (let i = 0; i < 3; i++) {
-      this.board.push(["","",""])
-    }
-    console.log(this.board)
   }
 
   getPlayers(): void{
@@ -90,10 +89,9 @@ export class LobbyComponent implements OnInit {
     clearInterval(this.interval);
   }
 
-  removeFriend(playerId: number){
-    //TODO CONFIRMATION!!
-    this.friendService.removeFriendUsingDELETE(playerId, "response").toPromise();
-    this.players.find(item => item.playerId === playerId).friend = false;
+  removeFriend(player: PlayerDTO){
+    this.friendToRemove = player;
+    this.showRemoveConfirmation = true;
   }
 
   addFriend(playerLogin: string){
@@ -104,17 +102,44 @@ export class LobbyComponent implements OnInit {
     this.players.find(item => item.login === login).friend = true;
   }
 
-  completeGameChallenge(login: string){
-    console.log("start game!")
-    this.showGameBoard = true;
+  completeRemoveUser(login: string){
+    this.players.find(item => item.login === login).friend = false;
+  }
+
+  completeGameChallenge(actualGame: GameDTO, inviter: boolean){
+    this.actualGameInfo.game = actualGame;
+    if (inviter){
+      this.actualGameInfo.playerPiece = 'X';
+    } else {
+      this.actualGameInfo.playerPiece = 'O';
+    }
+
+    this.actualGameInfo.board = [["","",""],["","",""],["","",""]];
+
+    /*this.gameState.setGame(gameInfo);
+
+    if (this.gameState.getGame()){
+      this.showGameBoard = true;
+    }*/
+
+    if (actualGame.turnUserId === actualGame.firstPlayerId){
+      this.actualGameInfo.playerOnTurnLogin = actualGame.firstPlayerLogin;
+    } else {
+      this.actualGameInfo.playerOnTurnLogin = actualGame.secondPlayerLogin;
+    }
+
+    console.log(this.actualGameInfo.playerOnTurnLogin)
+
+    if (this.actualGameInfo.game){
+      this.showGameBoard = true;
+    }
   }
 
   askGame(playerLogin: string){
-    //this.gameService.challengeGameUsingGET(playerLogin, "body").toPromise();
-    //this.showWaitGame = true;
-    //this.status = 'WAITING';
-    //this.waitingFor = playerLogin;
-    this.showGameBoard = true;
+    this.gameService.challengeGameUsingGET(playerLogin, "body").toPromise();
+    this.showWaitGame = true;
+    this.status = 'WAITING';
+    this.waitingFor = playerLogin;
   }
 
   handleMessage(message: MessageDTO){
@@ -123,7 +148,7 @@ export class LobbyComponent implements OnInit {
     }
     if (message.messageType === 'GAME_CHALLENGE'){
       if (this.showGameChallenge || this.showWaitGame){
-        //TODO reject invitational
+        this.gameService.rejectGameUsingGET(message.senderLogin, "body").toPromise();
       } else {
         this.showGameChallenge = true;
       }
@@ -131,7 +156,7 @@ export class LobbyComponent implements OnInit {
     if (message.messageType === 'GAME_ACCEPTED'){
       this.status = "ACCEPTED";
       this.terminateWaiting();
-
+      this.completeGameChallenge(message.game, true);
     }
     if (message.messageType === 'GAME_REJECTED'){
       this.status = "REJECTED";
@@ -142,7 +167,9 @@ export class LobbyComponent implements OnInit {
   terminateWaiting(){
     setTimeout(() =>{
       this.showWaitGame = false;
-      this.status = 'WAITING';
     }, 1000);
+    setTimeout(() =>{
+      this.status = 'WAITING';
+    }, 1100);
   }
 }

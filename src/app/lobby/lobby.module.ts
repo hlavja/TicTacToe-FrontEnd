@@ -8,10 +8,11 @@ import {ButtonModule} from "primeng/button";
 import { AddFriendComponent } from './components/add-friend/add-friend.component';
 import { WaitGameComponent } from './components/wait-game/wait-game.component';
 import { GameChallengeComponent } from './components/game-challenge/game-challenge.component';
+import { RemoveFriendComponent } from './components/remove-friend/remove-friend.component';
 
 
 @NgModule({
-  declarations: [LobbyComponent, BoardComponent, AddFriendComponent, WaitGameComponent, GameChallengeComponent],
+  declarations: [LobbyComponent, BoardComponent, AddFriendComponent, WaitGameComponent, GameChallengeComponent, RemoveFriendComponent],
   imports: [
     CommonModule,
     NavBarModule,

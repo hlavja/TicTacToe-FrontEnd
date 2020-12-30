@@ -1,15 +1,17 @@
 <p-dialog header="" [closable]="false" [(visible)]="showPopup" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
   <p-header>
     <h1>
-      It is {{gameInfo.playerOnTurnLogin}} turn!
+      It is {{gameInfo?.playerOnTurnLogin}} turn!
     </h1>
   </p-header>
   <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
       <table class="table table-bordered">
         <tbody>
-        <tr *ngFor="let row of board; index as i">
+        <tr *ngFor="let row of gameInfo.board; index as i">
           <ng-container *ngFor="let col of row; index as y">
-            <td class="align-middle text-center" *ngIf="col == ''" [ngClass]="gameInfo?.playerPiece === 'X' ? 'hoverX' : gameInfo?.playerPiece === 'O' ? 'hoverO' : ''" (click)="move(i, y)">
+            <td class="align-middle text-center" *ngIf="col == '' && gameInfo?.game?.turnUserId == user?.id" [ngClass]="gameInfo?.playerPiece === 'X' ? 'hoverX' : gameInfo?.playerPiece === 'O' ? 'hoverO' : ''" (click)="move(i, y)">
+            </td>
+            <td class="align-middle text-center" *ngIf="col == '' && gameInfo?.game?.turnUserId != user?.id">
             </td>
             <td class="align-middle text-center" *ngIf="col == 'X'" [ngClass]="'backgroundX'">
             </td>

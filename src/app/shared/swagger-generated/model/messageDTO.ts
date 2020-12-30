@@ -9,9 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { GameDTO } from './gameDTO';
 
 
 export interface MessageDTO { 
+    game?: GameDTO;
     messageType?: string;
     opponentLogin?: string;
     senderLogin?: string;

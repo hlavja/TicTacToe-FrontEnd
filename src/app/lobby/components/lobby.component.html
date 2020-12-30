@@ -63,7 +63,7 @@
                     <button (click)="askGame(player.login)" type="button" class="btn btn-primary">Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-primary">Remove friend</button>
+                    <button (click)="removeFriend(player)" type="button" class="btn btn-primary">Remove friend</button>
                   </div>
                 </div>
               </td>
@@ -76,7 +76,7 @@
                     <button (click)="askGame(player.login)" type="button" class="btn btn-success" disabled>Game</button>
                   </div>
                   <div class="col">
-                    <button (click)="removeFriend(player.playerId)" type="button" class="btn btn-danger">Remove friend</button>
+                    <button (click)="removeFriend(player)" type="button" class="btn btn-danger">Remove friend</button>
                   </div>
                 </div>
               </td>
@@ -90,6 +90,7 @@
 </div>
 
 <app-add-friend [(showPopup)]="showAddFriend" [message]="message" (emitAcceptUserLogin)="completeAddFriend($event)"></app-add-friend>
-<app-game-challenge [(showPopup)]="showGameChallenge" [message]="message" (emitAcceptUserLogin)="completeGameChallenge($event)"></app-game-challenge>
+<app-game-challenge [(showPopup)]="showGameChallenge" [message]="message" (emitNewGame)="completeGameChallenge($event, false)"></app-game-challenge>
 <app-wait-game  [(showPopup)]="showWaitGame" [opponentLogin]="waitingFor" [status]="status"></app-wait-game>
-<app-board [board]="board" [(showPopup)]="showGameBoard" [message]="message"></app-board>
+<app-board [gameInfo]="actualGameInfo" [user]="user" [(showPopup)]="showGameBoard" [message]="message"></app-board>
+<app-remove-friend [(showPopup)]="showRemoveConfirmation" [friendToRemove]="friendToRemove" (emitRemoveUser)="completeRemoveUser($event)"></app-remove-friend>

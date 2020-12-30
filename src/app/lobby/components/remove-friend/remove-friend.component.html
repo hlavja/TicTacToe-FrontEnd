@@ -1,0 +1,19 @@
+<p-dialog header="" [closable]="false" [(visible)]="showPopup" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <p-header>
+    <h1>
+      Remove friend!
+    </h1>
+  </p-header>
+  <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
+    Do you really want to remove {{ friendToRemove?.login }} from your friends?
+  </div>
+  <br>
+  <p-footer>
+    <div class="row justify-content-end align-items-center">
+      <div>
+        <p-button (click)="remove()" type="submit" label="Accept" class="pr-2"></p-button>
+        <p-button (click)="cancel()" label="Reject" class="pr-2"></p-button>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameResourceService, MessageDTO} from "../../../shared/swagger-generated";
+import {GameDTO, GameResourceService, MessageDTO} from "../../../shared/swagger-generated";
 
 @Component({
   selector: 'app-game-challenge',
@@ -11,7 +11,7 @@ export class GameChallengeComponent implements OnInit {
   @Input() showPopup
   @Input() message: MessageDTO
   @Output() showPopupChange: EventEmitter<boolean> = new EventEmitter<boolean>()
-  @Output() emitAcceptUserLogin: EventEmitter<string> = new EventEmitter<string>()
+  @Output() emitNewGame: EventEmitter<GameDTO> = new EventEmitter<GameDTO>()
 
   constructor(
     private gameService: GameResourceService
@@ -24,9 +24,8 @@ export class GameChallengeComponent implements OnInit {
     this.gameService.acceptGameUsingGET(this.message.senderLogin, "body").toPromise()
       .then((success) => {
         if (success){
-          //this.activeModal.close(this.message.senderLogin);
           this.showPopupChange.emit(false);
-          this.emitAcceptUserLogin.emit(this.message.senderLogin);
+          this.emitNewGame.emit(success);
         } else {
           console.log("error")
         }
@@ -34,19 +33,15 @@ export class GameChallengeComponent implements OnInit {
   }
 
   reject(){
-    /*this.gameService.(this.message.senderLogin, "body").toPromise()
+    this.gameService.rejectGameUsingGET(this.message.senderLogin, "body").toPromise()
       .then((success) => {
         if (success){
           //this.activeModal.close(this.message.senderLogin);
           this.showPopupChange.emit(false);
-          this.emitAcceptUserLogin.emit(this.message.senderLogin);
         } else {
           console.log("error")
         }
-      });*/
-
-    this.showPopupChange.emit(false);
-    console.log(this.message.senderLogin)
+      });
   }
 
 }

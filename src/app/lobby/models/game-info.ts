@@ -4,4 +4,5 @@ export interface GameInfo {
   game?: GameDTO;
   playerPiece?: string;
   playerOnTurnLogin?: string;
+  board?: string[][];
 }

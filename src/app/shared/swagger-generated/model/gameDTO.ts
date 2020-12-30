@@ -24,6 +24,7 @@ export interface GameDTO {
     result?: string;
     secondPlayerId?: number;
     secondPlayerLogin?: string;
+    turnUserId?: number;
     winningPlayerId?: number;
     winningPlayerLogin?: string;
 }

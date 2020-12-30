@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MessageDTO} from "../../../shared/swagger-generated";
 
 @Component({
   selector: 'app-wait-game',

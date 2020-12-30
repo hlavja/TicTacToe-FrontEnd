@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 import { GameDTO } from './gameDTO';
+import { MoveDTO } from './moveDTO';
 
 
 export interface MessageDTO { 
     game?: GameDTO;
     messageType?: string;
+    newMove?: MoveDTO;
     opponentLogin?: string;
     senderLogin?: string;
 }

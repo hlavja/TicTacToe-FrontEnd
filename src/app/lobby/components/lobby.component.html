@@ -92,5 +92,5 @@
 <app-add-friend [(showPopup)]="showAddFriend" [message]="message" (emitAcceptUserLogin)="completeAddFriend($event)"></app-add-friend>
 <app-game-challenge [(showPopup)]="showGameChallenge" [message]="message" (emitNewGame)="completeGameChallenge($event, false)"></app-game-challenge>
 <app-wait-game  [(showPopup)]="showWaitGame" [opponentLogin]="waitingFor" [status]="status"></app-wait-game>
-<app-board [gameInfo]="actualGameInfo" [user]="user" [(showPopup)]="showGameBoard" [message]="message"></app-board>
+<app-board [user]="user" [(showPopup)]="showGameBoard" [message]="message"></app-board>
 <app-remove-friend [(showPopup)]="showRemoveConfirmation" [friendToRemove]="friendToRemove" (emitRemoveUser)="completeRemoveUser($event)"></app-remove-friend>

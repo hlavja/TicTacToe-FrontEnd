@@ -113,9 +113,9 @@ export class GameResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'body', reportProgress?: boolean): Observable<MoveDTO>;
-    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MoveDTO>>;
-    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MoveDTO>>;
+    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'body', reportProgress?: boolean): Observable<MessageDTO>;
+    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MessageDTO>>;
+    public addMoveUsingPOST(id: number, move: MoveDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MessageDTO>>;
     public addMoveUsingPOST(id: number, move: MoveDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
@@ -146,7 +146,7 @@ export class GameResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<MoveDTO>(`${this.basePath}/games/${encodeURIComponent(String(id))}/move`,
+        return this.httpClient.post<MessageDTO>(`${this.basePath}/games/${encodeURIComponent(String(id))}/move`,
             move,
             {
                 withCredentials: this.configuration.withCredentials,

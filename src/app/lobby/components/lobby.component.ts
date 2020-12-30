@@ -15,6 +15,7 @@ import Timeout = NodeJS.Timeout;
 import {AuthService} from "../../auth/services/auth.service";
 import {LoggerService} from "../../shared/services/logger.service";
 import {GameInfo} from "../models/game-info";
+import {GameState} from "../states/game.state";
 
 @Component({
   selector: 'app-lobby',
@@ -47,10 +48,12 @@ export class LobbyComponent implements OnInit {
     private userSpecific: UserSpecificService,
     private friendService: FriendResourceService,
     private gameService: GameResourceService,
+    private gameState: GameState
   ) {
-    this.subscription[0]=this.playersState.getPlayers().subscribe(res => {
+    this.subscription[0] = this.playersState.getPlayers().subscribe(res => {
       this.players = res;
     });
+    this.subscription[1] = gameState.getGame().subscribe(res => this.actualGameInfo = res);
     this.websocketService.connect();
   }
 
@@ -107,32 +110,31 @@ export class LobbyComponent implements OnInit {
   }
 
   completeGameChallenge(actualGame: GameDTO, inviter: boolean){
-    this.actualGameInfo.game = actualGame;
+    const actualGameInfo: GameInfo = {};
+    actualGameInfo.game = actualGame;
     if (inviter){
-      this.actualGameInfo.playerPiece = 'X';
+      actualGameInfo.playerPiece = 'X';
+      actualGameInfo.opponentPiece = 'O';
     } else {
-      this.actualGameInfo.playerPiece = 'O';
+      actualGameInfo.playerPiece = 'O';
+      actualGameInfo.opponentPiece = 'X';
     }
 
-    this.actualGameInfo.board = [["","",""],["","",""],["","",""]];
-
-    /*this.gameState.setGame(gameInfo);
-
-    if (this.gameState.getGame()){
-      this.showGameBoard = true;
-    }*/
+    actualGameInfo.board = [["","",""],["","",""],["","",""]];
 
     if (actualGame.turnUserId === actualGame.firstPlayerId){
-      this.actualGameInfo.playerOnTurnLogin = actualGame.firstPlayerLogin;
+      actualGameInfo.playerOnTurnLogin = actualGame.firstPlayerLogin;
     } else {
-      this.actualGameInfo.playerOnTurnLogin = actualGame.secondPlayerLogin;
+      actualGameInfo.playerOnTurnLogin = actualGame.secondPlayerLogin;
     }
 
-    console.log(this.actualGameInfo.playerOnTurnLogin)
 
-    if (this.actualGameInfo.game){
+    this.gameState.setGame(actualGameInfo);
+    this.showGameBoard = true;
+
+    /*if (this.actualGameInfo.game){
       this.showGameBoard = true;
-    }
+    }*/
   }
 
   askGame(playerLogin: string){
@@ -161,6 +163,16 @@ export class LobbyComponent implements OnInit {
     if (message.messageType === 'GAME_REJECTED'){
       this.status = "REJECTED";
       this.terminateWaiting()
+    }
+    if (message.messageType === 'ADD_MOVE'){
+      if (this.actualGameInfo.playerPiece === 'O'){
+        this.actualGameInfo.board[message.newMove.boardY][message.newMove.boardX] = 'X';
+      } else {
+        this.actualGameInfo.board[message.newMove.boardY][message.newMove.boardX] = 'O';
+      }
+      this.actualGameInfo.game = message.game;
+      this.actualGameInfo.playerOnTurnLogin
+      this.gameState.setGame(this.actualGameInfo);
     }
   }
 

@@ -120,7 +120,7 @@ export class LobbyComponent implements OnInit {
       actualGameInfo.opponentPiece = 'X';
     }
 
-    actualGameInfo.board = [["","","","",""], ["","", "","",""], ["", "", "","",""], ["", "", "","",""], ["", "", "","",""]];
+    actualGameInfo.board = [["", "", ""], ["", "", ""], ["", "", ""]];
 
     if (actualGame.turnUserId === actualGame.firstPlayerId){
       actualGameInfo.playerOnTurnLogin = actualGame.firstPlayerLogin;

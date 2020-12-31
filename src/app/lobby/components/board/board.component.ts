@@ -31,7 +31,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   clearGameInfo(){
     this.gameInfo = {};
-    this.gameInfo.board = [["","","","",""], ["","", "","",""], ["", "", "","",""], ["", "", "","",""], ["", "", "","",""]];
+    this.gameInfo.board = [["", "", ""], ["", "", ""], ["", "", ""]];
     this.gameState.setGame(this.gameInfo);
     this.showPopupChange.emit(false);
   }

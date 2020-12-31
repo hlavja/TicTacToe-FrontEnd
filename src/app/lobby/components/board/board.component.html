@@ -1,14 +1,14 @@
 <p-dialog header="" [closable]="false" [(visible)]="showPopup" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
   <p-header>
-    <h4 *ngIf="gameInfo?.game?.gameStatus == 'RUNNING'">
+    <h5 *ngIf="gameInfo?.game?.gameStatus == 'RUNNING'">
       It is {{gameInfo?.game?.turnUserLogin}} turn!
-    </h4>
-    <h4 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'WON'" style="color: green">
+    </h5>
+    <h5 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'WON'" style="color: green">
       Player {{gameInfo?.game?.winningPlayerLogin}} won game!
-    </h4>
-    <h4 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'DRAFT'" style="color: orange">
+    </h5>
+    <h5 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'DRAFT'" style="color: orange">
       It is draft!
-    </h4>
+    </h5>
   </p-header>
   <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
     <table class="table table-bordered">

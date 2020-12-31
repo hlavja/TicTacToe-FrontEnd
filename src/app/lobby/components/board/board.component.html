@@ -1,33 +1,41 @@
 <p-dialog header="" [closable]="false" [(visible)]="showPopup" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
   <p-header>
-    <h1>
+    <h4 *ngIf="gameInfo?.game?.gameStatus == 'RUNNING'">
       It is {{gameInfo?.game?.turnUserLogin}} turn!
-    </h1>
+    </h4>
+    <h4 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'WON'" style="color: green">
+      Player {{gameInfo?.game?.winningPlayerLogin}} won game!
+    </h4>
+    <h4 *ngIf="gameInfo?.game?.gameStatus == 'ENDED' && gameInfo?.game?.result == 'DRAFT'" style="color: orange">
+      It is draft!
+    </h4>
   </p-header>
   <div class="container-fluid" style="min-height: 390px; min-width: 400px;">
-      <table class="table table-bordered">
-        <tbody>
-        <tr *ngFor="let row of gameInfo?.board; index as i">
-          <ng-container *ngFor="let col of row; index as y">
-            <td class="align-middle text-center" *ngIf="col == '' && gameInfo?.game?.turnUserId == user?.id" [ngClass]="gameInfo?.playerPiece === 'X' ? 'hoverX' : gameInfo?.playerPiece === 'O' ? 'hoverO' : ''" (click)="move(i, y)">
-            </td>
-            <td class="align-middle text-center" *ngIf="col == '' && gameInfo?.game?.turnUserId != user?.id">
-            </td>
-            <td class="align-middle text-center" *ngIf="col == 'X'" [ngClass]="'backgroundX'">
-            </td>
-            <td class="align-middle text-center" *ngIf="col == 'O'" [ngClass]="'backgroundO'">
-            </td>
-          </ng-container>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <br>
-    <p-footer>
-      <div class="row justify-content-end align-items-center">
-        <div>
-          <p-button (click)="giveUp()" label="Give Up!" class="pr-2"></p-button>
-        </div>
+    <table class="table table-bordered">
+      <tbody>
+      <tr *ngFor="let row of gameInfo?.board; index as i">
+        <ng-container *ngFor="let col of row; index as y">
+          <td class="align-middle text-center" *ngIf="col == '' && gameInfo?.game?.turnUserId == user?.id && gameInfo?.game?.gameStatus == 'RUNNING'"
+              [ngClass]="gameInfo?.playerPiece === 'X' ? 'hoverX' : gameInfo?.playerPiece === 'O' ? 'hoverO' : ''" (click)="move(i, y)">
+          </td>
+          <td class="align-middle text-center" *ngIf="col == '' && (gameInfo?.game?.turnUserId != user?.id || gameInfo?.game?.gameStatus == 'ENDED')">
+          </td>
+          <td class="align-middle text-center" *ngIf="col == 'X'" [ngClass]="'backgroundX'">
+          </td>
+          <td class="align-middle text-center" *ngIf="col == 'O'" [ngClass]="'backgroundO'">
+          </td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <p-footer>
+    <div class="row justify-content-end align-items-center">
+      <div>
+        <p-button *ngIf="gameInfo?.game?.gameStatus == 'RUNNING'" (click)="giveUp()" label="Give Up!" class="pr-2"></p-button>
+        <p-button *ngIf="gameInfo?.game?.gameStatus == 'ENDED'" (click)="close()" label="Back to lobby!" class="pr-2"></p-button>
       </div>
-    </p-footer>
+    </div>
+  </p-footer>
 </p-dialog>

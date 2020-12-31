@@ -120,7 +120,7 @@ export class LobbyComponent implements OnInit {
       actualGameInfo.opponentPiece = 'X';
     }
 
-    actualGameInfo.board = [["","",""],["","",""],["","",""]];
+    actualGameInfo.board = [["","","","",""], ["","", "","",""], ["", "", "","",""], ["", "", "","",""], ["", "", "","",""]];
 
     if (actualGame.turnUserId === actualGame.firstPlayerId){
       actualGameInfo.playerOnTurnLogin = actualGame.firstPlayerLogin;
@@ -128,13 +128,8 @@ export class LobbyComponent implements OnInit {
       actualGameInfo.playerOnTurnLogin = actualGame.secondPlayerLogin;
     }
 
-
     this.gameState.setGame(actualGameInfo);
     this.showGameBoard = true;
-
-    /*if (this.actualGameInfo.game){
-      this.showGameBoard = true;
-    }*/
   }
 
   askGame(playerLogin: string){
@@ -149,7 +144,7 @@ export class LobbyComponent implements OnInit {
       this.showAddFriend = true;
     }
     if (message.messageType === 'GAME_CHALLENGE'){
-      if (this.showGameChallenge || this.showWaitGame){
+      if (this.showGameChallenge || this.showWaitGame || this.showGameBoard){
         this.gameService.rejectGameUsingGET(message.senderLogin, "body").toPromise();
       } else {
         this.showGameChallenge = true;
@@ -171,7 +166,10 @@ export class LobbyComponent implements OnInit {
         this.actualGameInfo.board[message.newMove.boardY][message.newMove.boardX] = 'O';
       }
       this.actualGameInfo.game = message.game;
-      this.actualGameInfo.playerOnTurnLogin
+      this.gameState.setGame(this.actualGameInfo);
+    }
+    if (message.messageType === 'GIVE_UP'){
+      this.actualGameInfo.game = message.game;
       this.gameState.setGame(this.actualGameInfo);
     }
   }

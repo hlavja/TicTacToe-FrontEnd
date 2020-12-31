@@ -74,7 +74,7 @@ at least once
 * HTML canvas for the gameplay (otherwise it can be implemented using an HTML table) - **2 points**
 * [OpenAPI](https://swagger.io/specification/), Swagger, [RAML](https://raml.org/)
 or any other API modeling/specification language with code generation - **10 points**
-* Angular, React, any other frontend technology - **10 points**
+* ~~Angular, React, any other frontend technology~~ - **10 points**
 
 ## Solution details
 
@@ -116,18 +116,18 @@ action is performed (using REST or AJAX), removal must be effective for both sid
 
 ### Gameplay
 
-* the player must see who's in turn at any time during the game
+* ~~the player must see who's in turn at any time during the game~~
 * ~~can be implemented as an HTML table (JSF `<h:dataTable />` for example)~~
-* the player in turn has the possibility to place his mark in any free square
-* the turn can be implemented as a REST call or a server-side with AJAX
-* the other player must be notified using web socket
+* ~~the player in turn has the possibility to place his mark in any free square~~
+* ~~the turn can be implemented as a REST call or a server-side with AJAX~~
+* ~~the other player must be notified using web socket~~
 * in-game chat message sending can be implemented either as a REST call or a server-side with AJAX
 * in-game chat message notification must be implemented using web socket
 * in-game chat message retrieval in any of the three technologies
-* after one player wins or the board is full, both users are notified about the results
-* on an exit button they return (separately) to the lobby
-* the exit button is always available, when used during the game, the opponent is
-notified to have won
+* ~~after one player wins or the board is full, both users are notified about the results~~
+* ~~on an exit button they return (separately) to the lobby~~
+* ~~the exit button is always available, when used during the game, the opponent is
+notified to have won~~
 
 ## Submission
 

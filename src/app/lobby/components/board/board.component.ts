@@ -29,6 +29,17 @@ export class BoardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
+  clearGameInfo(){
+    this.gameInfo = {};
+    this.gameInfo.board = [["","","","",""], ["","", "","",""], ["", "", "","",""], ["", "", "","",""], ["", "", "","",""]];
+    this.gameState.setGame(this.gameInfo);
+    this.showPopupChange.emit(false);
+  }
+
+  close() {
+    this.clearGameInfo();
+  }
+
   move(row: number, col: number) {
     const move: MoveDTO = {
       boardX: col,
@@ -44,9 +55,6 @@ export class BoardComponent implements OnInit, OnDestroy {
             this.gameInfo.board[message.newMove.boardY][message.newMove.boardX] = this.gameInfo.playerPiece;
             this.gameInfo.game = message.game;
           }
-          //TODO
-
-          //
           this.gameState.setGame(this.gameInfo);
         } else {
           console.log("error")
@@ -55,8 +63,14 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   giveUp(){
-    this.gameInfo.board = [["","",""], ["","", ""], ["", "", ""]];
-    this.showPopupChange.emit(false);
+    this.gameService.giveUpUsingPOST(this.gameInfo.game.id, "response").toPromise()
+      .then((value) => {
+        if (value){
+          this.clearGameInfo();
+        } else {
+          console.log("error")
+        }
+      })
   }
 
   ngOnDestroy(): void {

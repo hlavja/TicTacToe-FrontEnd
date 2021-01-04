@@ -3,7 +3,7 @@
 A simple TicTacToe (Three-In-Rrow) app developed as semester project in [PIA](https://github.com/osvetlik/pia2020/tree/master/semester-project) on Master's studies on Faculty of applied sciences University of West Bohemia.
 This repository contains only backend Spring Boot Application.
 
-For running whole project you will need also [Spring Boot](https://spring.io/projects/spring-boot) backend part of app - [GitHub repository]()
+For running whole project you will need also [Spring Boot](https://spring.io/projects/spring-boot) backend part of app - [GitHub repository](https://github.com/hlavja/TicTacToe-BackEnd)
 
 
 

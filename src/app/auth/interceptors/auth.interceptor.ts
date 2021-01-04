@@ -5,11 +5,10 @@ import {
   HttpEvent,
   HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 
 import { catchError} from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -26,8 +25,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         catchError(err => {
-          if ((err instanceof HttpErrorResponse && err.status === 504)) {
-            return this.handle504Error(request, next);
+          if ((err instanceof HttpErrorResponse && err.status === 504 || err.status === 502 || err.status === 0)) {
+            return this.handleError(request, next);
           } else {
             return throwError(err);
           }
@@ -36,7 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
 
-  private handle504Error(request: HttpRequest<any>, next: HttpHandler) {
+  private handleError(request: HttpRequest<any>, next: HttpHandler) {
     this.authService.doLogout();
     return of (null);
   }

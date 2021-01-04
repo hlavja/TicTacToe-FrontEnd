@@ -28,6 +28,11 @@
       </tr>
       </tbody>
     </table>
+    <div class="row">
+      Your piece is:
+      <img style="max-width: 3rem" *ngIf="gameInfo?.playerPiece === 'X'" src="assets/images/cros.png" alt="Cross">
+      <img style="max-width: 3rem" *ngIf="gameInfo?.playerPiece === 'O'" src="assets/images/dot.png" alt="Dot">
+    </div>
   </div>
   <br>
   <p-footer>

@@ -1,30 +1,17 @@
-# WorkLogWebFrontend
+# Tic Tac Toe FrontEnd
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
+A simple TicTacToe (Three-In-Rrow) app developed as semester project in [PIA](https://github.com/osvetlik/pia2020/tree/master/semester-project) on Master's studies on Faculty of applied sciences University of West Bohemia.
+This repository contains only backend Spring Boot Application.
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+For running whole project you will need also [Spring Boot](https://spring.io/projects/spring-boot) backend part of app - [GitHub repository]()
 
 
-java -jar D:\School_navazujici\PIA\Semestralka\swagger-codegen-cli-2.jar generate -i D:\School_navazujici\PIA\Semestralka\FrontEnd\TicTacToe\src\app\shared\swagger_new5.json -l typescript-angular -o D:\School_navazujici\PIA\Semestralka\FrontEnd\TicTacToe\src\app\shared\swagger-generated --additional-properties ngVersion=9
+
+## Code generating
+
+Run `ng generate component component-name` to generate a new component.
+
+Run `java -jar swagger-codegen-cli-2.jar generate -i ..\src\app\shared\swagger_new5.json -l typescript-angular -o ..\src\app\shared\swagger-generated --additional-properties ngVersion=9` to generate HttpClient code to send REST requests to backend. 
+
+## Libs usage
+Project use [Bootstrap](https://getbootstrap.com/) and [PrimeNG](https://www.primefaces.org/primeng/)

@@ -9,6 +9,7 @@ import {UserProfileComponent} from "./user-profile/components/user-profile/user-
 import {MatchHistoryComponent} from "./match-history/components/match-history.component";
 import {ResetPasswordComponent} from "./reset-password/components/reset-password/reset-password.component";
 import {GameComponent} from "./game/components/game.component";
+import {UserAdministrationComponent} from "./user-administration/components/user-administration.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,14 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       expectedRole: ['ROLE_ADMIN', 'ROLE_USER']
+    }
+  },{
+    canActivate: [AuthGuard, RoleGuard],
+    path: 'administration',
+    component: UserAdministrationComponent,
+    pathMatch: 'full',
+    data: {
+      expectedRole: ['ROLE_ADMIN']
     }
   }, {
     canActivate: [AuthGuard, RoleGuard],

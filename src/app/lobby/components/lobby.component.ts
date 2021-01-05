@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {WebsocketService} from "../../shared/services/websocket.service";
 import {Subscription} from "rxjs";
 import {PlayersState} from "../states/players.state";
@@ -22,7 +22,7 @@ import {GameState} from "../states/game.state";
   templateUrl: './lobby.component.html',
   styleUrls: ['./lobby.component.scss'],
 })
-export class LobbyComponent implements OnInit {
+export class LobbyComponent implements OnInit, OnDestroy {
 
   friendToRemove: PlayerDTO;
   subscription: Subscription[] = [];
@@ -90,6 +90,7 @@ export class LobbyComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscription.forEach(sub => sub.unsubscribe());
     clearInterval(this.interval);
+    this.websocketService.disconnect();
   }
 
   removeFriend(player: PlayerDTO){
@@ -171,6 +172,11 @@ export class LobbyComponent implements OnInit {
     if (message.messageType === 'GIVE_UP'){
       this.actualGameInfo.game = message.game;
       this.gameState.setGame(this.actualGameInfo);
+    }
+    if (message.messageType === 'CHALLENGE_CANCELLED'){
+      if (this.showGameChallenge){
+        this.showGameChallenge = false;
+      }
     }
   }
 

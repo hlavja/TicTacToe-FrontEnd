@@ -18,6 +18,11 @@
           Match history
         </a>
       </li>
+      <li *ngIf="isAdminLogged" [className]="menuItemKey == 3 ? 'nav-item active' : 'nav-item'">
+        <a class="nav-link" [routerLink]="['/administration']" >
+          Administration
+        </a>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class='nav-item'>

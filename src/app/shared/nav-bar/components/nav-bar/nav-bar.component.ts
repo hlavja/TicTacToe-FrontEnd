@@ -13,6 +13,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   @Input() menuItemKey: number;
   loggedUser: UserDTO;
   subscription: Subscription[] = [];
+  isAdminLogged = false;
   constructor(
     private authService: AuthService
   ) {
@@ -20,6 +21,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setUser();
+    this.isAdminLogged = this.authService.getAdminLogged();
   }
 
   setUser(){

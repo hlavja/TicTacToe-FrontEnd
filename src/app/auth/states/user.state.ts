@@ -9,6 +9,7 @@ import {AccountResourceService, UserDTO} from "../../shared/swagger-generated";
 export class UserState {
   private roleState: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(null);
   private userState$: BehaviorSubject<UserDTO> = new BehaviorSubject<UserDTO>(null);
+  private isLoggedAdmin$:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private accountService: AccountResourceService,
@@ -37,5 +38,13 @@ export class UserState {
         .subscribe(res => this.setUser(res));
     }
     return this.userState$.asObservable();
+  }
+
+  setLoggedAdmin(adminLogged: boolean): void{
+    this.isLoggedAdmin$.next(adminLogged);
+  }
+
+  getLoggedAdmin(): boolean{
+    return this.isLoggedAdmin$.getValue();
   }
 }

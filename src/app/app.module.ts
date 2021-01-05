@@ -15,6 +15,7 @@ import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {CookieService} from "ngx-cookie-service";
 import {GameModule} from "./game/game.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {UserAdministrationModule} from "./user-administration/user-administration.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     MatchHistoryModule,
     ResetPasswordModule,
     GameModule,
+    UserAdministrationModule
   ],
   providers: [
     Title,

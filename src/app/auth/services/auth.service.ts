@@ -42,6 +42,11 @@ export class AuthService {
      );
   }
 
+  getAdminLogged(): boolean{
+    return this.userState.getLoggedAdmin();
+  }
+
+
   doLogout(): void {
     this.userState.setUser(null);
     this.removeTokens();
@@ -102,6 +107,9 @@ export class AuthService {
         roles: parsedToken.auth,
         id: parsedToken.userId
       };
+      if (parsedToken.auth[0] === 'ROLE_ADMIN'){
+          this.userState.setLoggedAdmin(true);
+      }
       this.userState.setRole(user);
       return user;
     }

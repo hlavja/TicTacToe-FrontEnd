@@ -17,4 +17,8 @@ export class WaitGameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  cancel() {
+
+  }
+
 }

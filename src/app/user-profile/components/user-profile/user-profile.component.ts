@@ -73,21 +73,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassword(){
+    this.submitted = true;
     const newPassword: PasswordChangeDTO = {
       currentPassword: this.passwordForm.controls['currentPassword'].value,
       newPassword: this.passwordForm.controls['newPassword'].value
     }
-    this.accountService.changePasswordUsingPOST(newPassword, "response").pipe(
-      map((response: HttpResponse<any>) => {
-        if (response.status === 200) {
-          this.successMessage = 'Password successfully changed!';
-          this.success = true;
-        }
-      }) , catchError (err => {
-        this.handleErrorPassword(err)
-        return of (null);
-      })
-    ).toPromise();
+    if (this.passwordForm.valid) {
+      this.accountService.changePasswordUsingPOST(newPassword, "response").pipe(
+        map((response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.successMessage = 'Password successfully changed!';
+            this.success = true;
+          }
+        }) , catchError (err => {
+          this.handleErrorPassword(err)
+          return of (null);
+        })
+      ).toPromise();
+    } else {
+      this.submitted = false;
+    }
   }
 
   handleErrorInfo(err): void{

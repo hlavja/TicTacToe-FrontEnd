@@ -92,15 +92,4 @@ export class WebsocketService {
       this.connectionSubscription = null;
     }
   }
-
-  sendActivity2(): void {
-    if (this.stompClient && this.stompClient.connected) {
-
-      this.stompClient.send(
-        '/secured/player-action', // destination
-        JSON.stringify({ senderLogin: "user@localhost", messageType: "CREATE_GAME", opponentLogin: "user@localhost" }), // body
-        {} // header
-      );
-    }
-  }
 }

@@ -8,5 +8,4 @@ export * from './messageDTO';
 export * from './moveDTO';
 export * from './passwordChangeDTO';
 export * from './playerDTO';
-export * from './user';
 export * from './userDTO';

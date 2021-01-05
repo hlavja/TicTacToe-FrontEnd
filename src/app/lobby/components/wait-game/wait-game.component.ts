@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {UserSpecificService} from "../../../shared/swagger-generated";
 
 @Component({
   selector: 'app-wait-game',
@@ -12,13 +13,15 @@ export class WaitGameComponent implements OnInit {
   @Input() status: string
   @Output() showPopupChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
-  constructor() { }
+  constructor(
+    private userSpecificService: UserSpecificService
+  ) { }
 
   ngOnInit(): void {
   }
 
-  cancel() {
-
+  cancel(login: string) {
+    this.userSpecificService.cancelChallengeUsingGET(login, "response").toPromise();
   }
 
 }

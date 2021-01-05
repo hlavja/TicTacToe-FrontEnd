@@ -1,2 +1,36 @@
 <app-nav-bar [menuItemKey]="3"></app-nav-bar>
-<p>user-administration works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <h1>Users administration</h1>
+    </div>
+    <div class="col-6 text-right justify-content-center align-items-right align-self-center">
+      <button (click)="getUsers()" type="button" class="btn btn-primary">Refresh users</button>
+    </div>
+    <br>
+    <br>
+  </div>
+  <table class="table table-striped" aria-describedby="tracker-page-heading">
+    <thead>
+    <tr class="d-flex">
+      <th class="col-4">Login</th>
+      <th class="col-2">Promote/Demote</th>
+      <th class="col">Change password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="d-flex" *ngFor="let user of users">
+      <td class="col-4">{{ user.login }}</td>
+      <td class="col-2" *ngIf="user.authorities.includes('ROLE_ADMIN')">
+        <button (click)="demote(user.id)" type="button" class="btn btn-primary">Demote</button>
+      </td>
+      <td class="col-2" *ngIf="user.authorities.includes('ROLE_USER')">
+        <button (click)="promote(user.id)" type="button" class="btn btn-primary">Promote</button>
+      </td>
+      <td class="col">
+        TODO CHANGE PASSWORD POPOUT
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

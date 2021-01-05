@@ -7,7 +7,6 @@ import { AccountResourceService } from './api/accountResource.service';
 import { FriendResourceService } from './api/friendResource.service';
 import { GameResourceService } from './api/gameResource.service';
 import { LobbyResourceService } from './api/lobbyResource.service';
-import { MoveResourceService } from './api/moveResource.service';
 import { UserJwtControllerService } from './api/userJwtController.service';
 import { UserResourceService } from './api/userResource.service';
 import { UserSpecificService } from './api/userSpecific.service';
@@ -21,7 +20,6 @@ import { UserSpecificService } from './api/userSpecific.service';
     FriendResourceService,
     GameResourceService,
     LobbyResourceService,
-    MoveResourceService,
     UserJwtControllerService,
     UserResourceService,
     UserSpecificService ]

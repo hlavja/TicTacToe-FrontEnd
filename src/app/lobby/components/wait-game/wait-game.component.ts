@@ -21,7 +21,15 @@ export class WaitGameComponent implements OnInit {
   }
 
   cancel(login: string) {
-    this.userSpecificService.cancelChallengeUsingGET(login, "response").toPromise();
+    this.userSpecificService.cancelChallengeUsingGET(login, "body").toPromise()
+      .then((success) => {
+        if (success){
+          //this.activeModal.close(this.message.senderLogin);
+          this.showPopupChange.emit(false);
+        } else {
+          console.log("error")
+        }
+      });
   }
 
 }

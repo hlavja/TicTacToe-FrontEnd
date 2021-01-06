@@ -49,6 +49,7 @@ export class AuthService {
 
   doLogout(): void {
     this.userState.setUser(null);
+    this.userState.setLoggedAdmin(false);
     this.removeTokens();
     this.router.navigate(['/login']);
   }

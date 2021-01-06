@@ -10,12 +10,18 @@
     <br>
     <br>
   </div>
+  <div class="alert alert-success" *ngIf="success">
+    <strong> {{ successMessage }} </strong>
+  </div>
+  <div class="alert alert-danger" *ngIf="showError">
+    <strong> {{ errorMessage }} </strong>
+  </div>
   <table class="table table-striped" aria-describedby="tracker-page-heading">
     <thead>
     <tr class="d-flex">
       <th class="col-4">Login</th>
       <th class="col-2">Promote/Demote</th>
-      <th class="col">Change password</th>
+      <th class="col">New password</th>
     </tr>
     </thead>
     <tbody>
@@ -28,7 +34,20 @@
         <button (click)="promote(user.id)" type="button" class="btn btn-primary">Promote</button>
       </td>
       <td class="col">
-        TODO CHANGE PASSWORD POPOUT
+        <form class="form" [formGroup]="passwordForm" (ngSubmit)="setPassword(user.login)">
+          <div class="row">
+          <div class="form-group col d-flex">
+            <label for="newPassword"></label>
+            <input pPassword feedback="true" type="password" class="form-control" formControlName="newPassword" id="newPassword" autocomplete="mew-password">
+          </div>
+          <div class="form-group col-4">
+            <button [disabled]="showLoading" class="btn btn-primary">
+              <span *ngIf="showLoading" class="spinner-border spinner-border-sm mr-1"></span>
+              Change password
+            </button>
+          </div>
+          </div>
+        </form>
       </td>
     </tr>
     </tbody>

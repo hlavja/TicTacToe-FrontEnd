@@ -23,15 +23,10 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-                <input type="password" class="form-control" formControlName="password" id="password" autocomplete="mew-password">
+                <input type="password" pPassword feedback="true" class="form-control" formControlName="password" id="password" autocomplete="mew-password">
               <span class="text-danger"
                     *ngIf="(registerFormControl.password.touched || submitted) && registerFormControl.password.errors?.required">
                                 Password is required
-                            </span>
-              <span class="text-danger"
-                    *ngIf="registerFormControl.password.touched && registerFormControl.password.errors?.invalidPassword">
-                                Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
-                                letter and 1 number
                             </span>
             </div>
             <div class="form-group">

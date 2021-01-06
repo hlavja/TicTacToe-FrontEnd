@@ -366,4 +366,56 @@ export class AccountResourceService {
         );
     }
 
+    /**
+     * setPassword
+     * 
+     * @param login login
+     * @param passwordChangeDto passwordChangeDto
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setPasswordUsingPOST(login: string, passwordChangeDto: PasswordChangeDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public setPasswordUsingPOST(login: string, passwordChangeDto: PasswordChangeDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public setPasswordUsingPOST(login: string, passwordChangeDto: PasswordChangeDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public setPasswordUsingPOST(login: string, passwordChangeDto: PasswordChangeDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (login === null || login === undefined) {
+            throw new Error('Required parameter login was null or undefined when calling setPasswordUsingPOST.');
+        }
+
+        if (passwordChangeDto === null || passwordChangeDto === undefined) {
+            throw new Error('Required parameter passwordChangeDto was null or undefined when calling setPasswordUsingPOST.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<any>(`${this.basePath}/account/${encodeURIComponent(String(login))}/set-password`,
+            passwordChangeDto,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

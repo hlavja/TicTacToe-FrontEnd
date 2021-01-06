@@ -21,7 +21,7 @@ export class WaitGameComponent implements OnInit {
   }
 
   cancel(login: string) {
-    this.userSpecificService.cancelChallengeUsingGET(login, "body").toPromise()
+    this.userSpecificService.cancelChallengeUsingGET(login, "response").toPromise()
       .then((success) => {
         if (success){
           //this.activeModal.close(this.message.senderLogin);
